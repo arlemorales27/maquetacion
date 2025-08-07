@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos del Diseño Visual</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background-color: #f7fafc;
+        }
+        .navbar {
+            background-color: #2b6cb0;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .navbar-brand:hover, .nav-link:hover {
+            color: #bee3f8 !important;
+        }
+        .section {
+            padding: 4rem 2rem;
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .icon {
+            margin-right: 0.5rem;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        th, td {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+        th {
+            background-color: #2b6cb0;
+            color: white;
+        }
+        .color-swatch {
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+        @media (max-width: 768px) {
+            .section {
+                padding: 2rem 1rem;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#"><i class="fas fa-palette icon"></i> Diseño Visual</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#color-theory">Teoría del Color</a></li>
+                <li class="nav-item"><a class="nav-link" href="#typography">Tipografía</a></li>
+                <li class="nav-item"><a class="nav-link" href="#iconography">Iconografía</a></li>
+                <li class="nav-item"><a class="nav-link" href="#brand-identity">Identidad de Marca</a></li>
+                <li class="nav-item"><a class="nav-link" href="#task">Tarea Práctica</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<header class="bg-blue-700 text-white text-center py-16">
+    <div class="container">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4" style="font-family: 'Playfair Display', serif;">Fundamentos del Diseño Visual</h1>
+        <p class="text-lg md:text-xl">Descubre los principios clave del diseño visual con ejemplos modernos y tendencias del 2025.</p>
+        <img src="https://www.estudiotipo.com/wp-content/uploads/2024/09/tendencias-diseno-grafico-2025.webp" alt="Diseño visual moderno" class="mt-6">
+    </div>
+</header>
+
+<!-- Color Theory -->
+<section id="color-theory" class="section">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-4"><i class="fas fa-paint-roller icon"></i> 1. Teoría del Color</h2>
+        <p>La teoría del color es la base del diseño visual, ya que los colores influyen en las emociones y decisiones de los usuarios. En 2025, las tendencias incluyen paletas vibrantes, gradientes suaves y colores monocromáticos con acentos neón.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Psicología del Color</h3>
+        <p>Los colores evocan emociones específicas:</p>
+        <ul class="list-disc pl-6">
+            <li><span class="color-swatch" style="background-color: #ef4444;"></span><strong>Rojo</strong>: Energía, urgencia (ej. botones de "Comprar ahora").</li>
+            <li><span class="color-swatch" style="background-color: #3b82f6;"></span><strong>Azul</strong>: Confianza, calma (ej. bancos, redes sociales).</li>
+            <li><span class="color-swatch" style="background-color: #10b981;"></span><strong>Verde</strong>: Crecimiento, naturaleza (ej. apps de sostenibilidad).</li>
+        </ul>
+        <p><strong>Ejemplo moderno</strong>: Spotify usa verdes vibrantes para transmitir energía y creatividad, combinados con fondos oscuros para un look moderno en 2025.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Combinaciones de Colores</h3>
+        <p>Las combinaciones efectivas se basan en la rueda de color:</p>
+        <table>
+            <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Ejemplo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><strong>Complementarios</strong></td>
+                <td>Colores opuestos en la rueda (alto contraste).</td>
+                <td>Azul y naranja (ej. Figma).</td>
+            </tr>
+            <tr>
+                <td><strong>Análogos</strong></td>
+                <td>Colores adyacentes (armonía suave).</td>
+                <td>Verde, azul-verde, azul (ej. apps de meditación).</td>
+            </tr>
+            <tr>
+                <td><strong>Triádicos</strong></td>
+                <td>Tres colores equidistantes (vibrante, equilibrado).</td>
+                <td>Rojo, amarillo, azul (ej. logotipos infantiles).</td>
+            </tr>
+            </tbody>
+        </table>
+        <p><strong>Tendencia 2025</strong>: Gradientes dinámicos (ej. Instagram combina morados y naranjas en sus historias).</p>
+        <img src="https://codigocreativo.uscmarketingdigital.com/wp-content/uploads/2024/01/Rueda-de-color-1024x580.webp" alt="Paleta de colores vibrante" class="mt-4">
+    </div>
+</section>
+
+<!-- Typography -->
+<section id="typography" class="section bg-gray-100">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-4"><i class="fas fa-font icon"></i> 2. Tipografía</h2>
+        <p>La tipografía define la legibilidad y el tono visual de una interfaz. En 2025, las tendencias favorecen fuentes sans-serif geométricas y combinaciones de fuentes bold con delicadas serif para contraste.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Selección de Fuentes</h3>
+        <p>Elige fuentes según el propósito:</p>
+        <ul class="list-disc pl-6">
+            <li><strong>Serif</strong>: Elegante, tradicional (ej. Playfair Display para titulares).</li>
+            <li><strong>Sans-Serif</strong>: Moderna, limpia (ej. Inter para texto general).</li>
+            <li><strong>Monospace</strong>: Técnica, precisa (ej. JetBrains Mono para código).</li>
+        </ul>
+        <p><strong>Ejemplo moderno</strong>: Notion usa Inter para su interfaz limpia, combinada con acentos serif en su branding.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Jerarquía Tipográfica</h3>
+        <p>Organiza el contenido con tamaños y pesos diferentes:</p>
+        <ul class="list-disc pl-6">
+            <li><span style="font-size: 2rem; font-weight: 700;">Título</span>: Grande, bold (32px+).</li>
+            <li><span style="font-size: 1.5rem; font-weight: 600;">Subtítulo</span>: Mediano, semi-bold (24px).</li>
+            <li><span style="font-size: 1rem;">Texto</span>: Legible, regular (16px).</li>
+        </ul>
+        <p><strong>Ejemplo</strong>: Medium usa una jerarquía clara con títulos grandes y texto espaciado para mejorar la lectura.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Legibilidad</h3>
+        <p>Asegura que el texto sea fácil de leer:</p>
+        <ul class="list-disc pl-6">
+            <li>Contraste suficiente (ej. texto negro sobre fondo blanco).</li>
+            <li>Interlineado adecuado (1.5x el tamaño de fuente).</li>
+            <li>Tamaño mínimo de 16px para texto en web.</li>
+        </ul>
+        <p><strong>Tendencia 2025</strong>: Fuentes variables que ajustan peso y ancho dinámicamente (ej. Google Fonts como Roboto Flex).</p>
+        <img src="https://www.rayitasazules.com/wp-content/uploads/2025/03/sharp.webp" alt="Tipografía moderna" class="mt-4">
+    </div>
+</section>
+
+<!-- Iconography -->
+<section id="iconography" class="section">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-4"><i class="fas fa-icons icon"></i> 3. Iconografía</h2>
+        <p>Los iconos simplifican la comunicación visual y guían al usuario. En 2025, los iconos 3D y animados (microinteracciones) son tendencia, junto con diseños minimalistas y personalizados.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Uso y Diseño de Iconos</h3>
+        <p>Los iconos deben ser:</p>
+        <ul class="list-disc pl-6">
+            <li><strong>Intuitivos</strong>: Representar claramente su función (ej. un sobre para correo).</li>
+            <li><strong>Consistentes</strong>: Mismo estilo, tamaño y grosor.</li>
+            <li><strong>Escalables</strong>: Usar SVG para mantener calidad en cualquier dispositivo.</li>
+        </ul>
+        <p><strong>Ejemplo moderno</strong>: Duolingo usa iconos animados para gamificar el aprendizaje, con colores vivos y formas redondeadas.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Bibliotecas de Iconos</h3>
+        <p>Usa bibliotecas populares para ahorrar tiempo:</p>
+        <ul class="list-disc pl-6">
+            <li><strong>Font Awesome</strong>: Amplia, versátil, incluye iconos animados.</li>
+            <li><strong>Material Icons</strong>: Minimalistas, ideales para apps Android.</li>
+            <li><strong>Heroicons</strong>: Modernos, optimizados para Tailwind CSS.</li>
+        </ul>
+        <p><strong>Tendencia 2025</strong>: Iconos personalizados generados con IA para reflejar la identidad de marca (ej. Adobe Express).</p>
+        <img src="https://as1.ftcdn.net/jpg/06/63/20/04/1000_F_663200415_jI9A8wND4z8eiqeIVozg37KhgLfsLxdn.jpg" alt="Iconos en interfaz" class="mt-4">
+    </div>
+</section>
+
+<!-- Brand Identity -->
+<section id="brand-identity" class="section bg-gray-100">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-4"><i class="fas fa-fingerprint icon"></i> 4. Identidad de Marca</h2>
+        <p>La identidad de marca define la personalidad visual de un producto. Incluye colores, fuentes, imágenes y guías de estilo para mantener coherencia.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Creación de Paletas de Colores</h3>
+        <p>Una paleta debe incluir:</p>
+        <ul class="list-disc pl-6">
+            <li>Color primario (define la marca).</li>
+            <li>Colores secundarios (complementan).</li>
+            <li>Acentos (para botones, enlaces).</li>
+        </ul>
+        <p><strong>Ejemplo moderno</strong>: Slack usa morado como primario, con acentos verdes y amarillos para acciones clave.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Fuentes Tipográficas</h3>
+        <p>Elige 1-2 fuentes que reflejen el tono de la marca (ej. moderna, amigable, profesional).</p>
+        <p><strong>Ejemplo</strong>: Airbnb combina una sans-serif personalizada (Circular) con acentos serif para elegancia.</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Imágenes</h3>
+        <p>Usa imágenes coherentes con el tono de la marca (ej. minimalistas, vibrantes, ilustradas).</p>
+        <p><strong>Tendencia 2025</strong>: Ilustraciones 3D y renders generados por IA (ej. Canva).</p>
+
+        <h3 class="text-2xl font-semibold mt-6">Guías de Estilo</h3>
+        <p>Documenta reglas para colores, fuentes, iconos y espaciado. Ejemplo: Figma’s Design System.</p>
+        <p><strong>Ejemplo moderno</strong>: Dropbox usa una guía de estilo con paleta monocromática y fuentes sans-serif para un look limpio.</p>
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Identidad de marca" class="mt-4">
+    </div>
+</section>
+
+<!-- Practical Task -->
+<section id="task" class="section">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-4"><i class="fas fa-tasks icon"></i> 5. Tarea Práctica</h2>
+        <p>Diseña la página de inicio de una aplicación de productividad (ej. una app de tareas). Aplica los fundamentos del diseño visual:</p>
+        <ol class="list-decimal pl-6">
+            <li><strong>Teoría del Color</strong>: Crea una paleta con un color primario (ej. azul para confianza), un secundario (ej. gris claro) y un acento (ej. naranja). Usa un gradiente en el fondo del hero.</li>
+            <li><strong>Tipografía</strong>: Selecciona una fuente sans-serif (ej. Inter) para el cuerpo y una serif (ej. Playfair Display) para el título. Asegura una jerarquía clara (título: 32px, subtítulo: 24px, texto: 16px).</li>
+            <li><strong>Iconografía</strong>: Diseña o selecciona iconos de Font Awesome para acciones como “Añadir tarea” (fa-plus) y “Completar” (fa-check). Mantén un estilo consistente (mismo tamaño, gros grosor).</li>
+            <li><strong>Identidad de Marca</strong>: Crea una guía de estilo con tu paleta, fuentes y un logotipo simple (puedes usar una inicial estilizada). Usa imágenes o ilustraciones coherentes (ej. ilustraciones 3D de tareas).</li>
+            <li><strong>Responsividad</strong>: Diseña para móvil primero (1 columna) y escritorio (2-3 columnas). Usa herramientas como Figma o un editor de código.</li>
+        </ol>
+        <p><strong>Entregable</strong>: Un prototipo en Figma o una página HTML/CSS que muestre la página de inicio con un hero, una lista de tareas y un formulario para añadir tareas.</p>
+        <p><strong>Extra</strong>: Añade una microinteracción (ej. un botón que cambia de color al pasar el ratón) para alinearte con tendencias 2025.</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-blue-700 text-white py-6">
+    <div class="container text-center">
+        <p>&copy; 2025 Fundamentos del Diseño Visual. Arle Morales Ortiz</p>
+
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Smooth scrolling for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+</body>
+</html>
