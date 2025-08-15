@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sketch, Wireframe, Mockup y Prototipo — Guía Profesional 2025</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --primary:#2b6cb0; --primary-300:#bee3f8; --bg:#f7fafc; --text:#2d3748; --card:#ffffff; --muted:#718096;
+        }
+        html,body{scroll-behavior:smooth;}
+        body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);line-height:1.6;}
+
+        .navbar{background-color:var(--primary);}
+        .navbar-brand,.nav-link{color:#fff!important;}
+        .navbar-brand:hover,.nav-link:hover{color:var(--primary-300)!important;}
+        .navbar-toggler{border-color:#e2e8f0}.navbar-toggler-icon{filter:invert(1);}
+        .section{padding:4rem 0;}
+        @media (max-width:768px){.section{padding:2rem 0;}}
+
+        /* Tarjetas uniformes y sin huecos */
+        .equal-row > [class*="col"]{display:flex;}
+        .equal-row .card{display:flex;flex-direction:column;width:100%;}
+        .card{border:1px solid #e2e8f0;border-radius:14px;background:var(--card);transition:transform .3s,box-shadow .3s;}
+        .card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.08);}
+        .card-body{flex:1 1 auto;}
+        .card-footer{margin-top:auto;background:transparent;border-top:0;padding-top:0;}
+
+        /* Hero */
+        .hero{
+            position:relative;color:#fff;overflow:hidden;
+            background: radial-gradient(1200px 600px at 20% -10%, #4299e1 0, rgba(66,153,225,0) 70%),
+            radial-gradient(800px 400px at 90% 0%, #90cdf4 0, rgba(144,205,244,0) 60%),
+            linear-gradient(135deg, #2b6cb0, #2c5282);
+        }
+        .hero::after{content:"";position:absolute;inset:-40% -20% auto -20%;height:120%;
+            background:conic-gradient(from 0deg,#ffffff22,transparent 60%,#ffffff15);
+            animation:spin 18s linear infinite;filter:blur(60px);}
+        @keyframes spin{to{transform:rotate(1turn)}}
+
+        /* Chips, utilidades y colores */
+        .chip{padding:.35rem .6rem;border-radius:999px;font-size:.85rem;background:#ebf8ff;color:#2b6cb0;border:1px solid #bfdbfe;}
+        .muted{color:var(--muted)}
+        .shadow-soft{box-shadow:0 10px 24px rgba(0,0,0,.08);}
+        .color-swatch{width:42px;height:42px;display:inline-block;border-radius:8px;margin-right:.5rem;}
+
+        /* Galería compacta y de misma altura (Sección 2) */
+        .media-grid{display:grid;gap:1rem;grid-template-columns:repeat(2,minmax(0,1fr));}
+        .media-grid figure{margin:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;}
+        .media-grid img{width:100%;max-width:220px;max-height:140px;object-fit:contain;border-radius:10px;background:#fff;}
+        @media (max-width:768px){.media-grid{grid-template-columns:1fr;} .media-grid img{max-height:180px;}}
+
+        /* Imagen mockup (Sección 4) más pequeña y centrada */
+        .mockup-photo{display:block;margin:0 auto;max-width:360px;max-height:360px;object-fit:contain;border-radius:12px;}
+
+        /* Prototipo (Sección 5) */
+        .phone{width:320px;max-width:90vw;border:12px solid #111;border-radius:36px;background:#000;
+            box-shadow:0 20px 50px rgba(0,0,0,.25);overflow:hidden;margin-inline:auto;}
+        .screen{background:#fff;min-height:540px;display:none;}
+        .screen.active{display:block;}
+        .toolbar{background:var(--primary);color:#fff;padding:.8rem 1rem;font-weight:600;}
+        .btn-cta{background:var(--primary);border:none;color:#fff;padding:.75rem 1rem;border-radius:10px;transition:transform .15s,box-shadow .2s;}
+        .btn-cta:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(43,108,176,.35);}
+
+        /* Animación entrada */
+        .reveal{opacity:0;transform:translateY(24px);transition:all .6s ease;}
+        .reveal.in{opacity:1;transform:none;}
+
+        /* Lista de principios: 2 columnas en desktop para llenar espacio */
+        .principles{columns:2;column-gap:1.25rem;}
+        .principles li{break-inside:avoid;margin-bottom:.35rem;}
+        .hero-img{
+            width: 100%;
+            height: auto;
+            max-width: none;   /* evita límites heredados */
+            display: block;
+            border-radius: 12px; /* combina con tu estilo */
+        }
+        @media (min-width: 768px){
+            .hero-img{
+                aspect-ratio: 21/9;   /* alto proporcional */
+                object-fit: cover;    /* llena el área recortando si hace falta */
+            }
+        }
+        @media (max-width:992px){.principles{columns:1;}}
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#"><i class="fas fa-bezier-curve me-2"></i> UX Tutorial 2025</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navBar" class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#definiciones">Definiciones</a></li>
+                <li class="nav-item"><a class="nav-link" href="#baja-fidelidad">Baja fidelidad</a></li>
+                <li class="nav-item"><a class="nav-link" href="#herramientas">Herramientas</a></li>
+                <li class="nav-item"><a class="nav-link" href="#mockups">Mockups</a></li>
+                <li class="nav-item"><a class="nav-link" href="#prototipado">Prototipado</a></li>
+                <li class="nav-item"><a class="nav-link" href="#practica">Práctica</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero text-white text-center py-16 section" id="inicio">
+    <div class="container">
+
+        <h1 class="text-4xl md:text-5xl font-bold mt-3" style="font-family:'Playfair Display',serif;">
+            Sketch → Wireframe → Mockup → Prototipo
+        </h1>
+        <p class="mt-4 lead">De la idea al producto: guía completa con ejemplos, recursos y un prototipo interactivo.</p>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="#definiciones" class="btn btn-light shadow-soft"><i class="fa-solid fa-compass me-2"></i> Empezar</a>
+            <a href="#simulador" class="btn btn-outline-light"><i class="fa-solid fa-mobile-screen-button me-2"></i> Ver prototipo</a>
+        </div>
+        <img
+                class="hero-img img-fluid w-100 mt-5 shadow-soft"
+                src="https://www.visily.ai/wp-content/uploads/2023/11/Feature-image-1.jpg"
+                alt="Ejemplo de tablero de UI con componentes — Visily"
+                loading="eager" decoding="async"
+        />
+
+    </div>
+</header>
+
+<!-- 1) DEFINICIONES -->
+<section id="definiciones" class="section">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-3"><i class="fas fa-layer-group me-2"></i> 1) Definiciones precisas</h2>
+        <p class="muted mb-4">Entiende el vocabulario clave antes de diseñar.</p>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 h-100 reveal">
+                    <div class="icon-badge mb-3"><i class="fa-solid fa-pencil"></i></div>
+                    <h3 class="h5 fw-bold">Sketch (boceto)</h3>
+                    <p>Dibujo rápido y preliminar que representa las características principales de un objeto o escena. Ideal para divergir y fallar barato.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 h-100 reveal">
+                    <div class="icon-badge mb-3"><i class="fa-solid fa-square"></i></div>
+                    <h3 class="h5 fw-bold">Wireframe</h3>
+                    <p>Esquema estructural (baja/mediana fidelidad) que define jerarquía, layout y navegación.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 h-100 reveal">
+                    <div class="icon-badge mb-3"><i class="fa-solid fa-image"></i></div>
+                    <h3 class="h5 fw-bold">Mockup</h3>
+                    <p>Diseño estático de alta fidelidad (colores, tipografías, componentes reales).</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 h-100 reveal">
+                    <div class="icon-badge mb-3"><i class="fa-solid fa-diagram-project"></i></div>
+                    <h3 class="h5 fw-bold">Prototipo</h3>
+                    <p>Versión interactiva que simula flujos y estados. Excelente para tests de usabilidad.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2) SKETCHES & WIREFRAMES: SIN ESPACIOS EN BLANCO -->
+<section id="baja-fidelidad" class="section bg-gray-100">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-3"><i class="fas fa-pen-ruler me-2"></i> 2) Sketches &amp; Wireframes de baja fidelidad</h2>
+        <p class="mb-4">Combina técnicas manuales y digitales para avanzar rápido sin atarte a la estética final.</p>
+
+        <div class="row g-4 align-items-stretch equal-row">
+            <!-- IZQUIERDA: contenido + imagen inferior para llenar -->
+            <div class="col-12 col-lg-6">
+                <div class="card p-4 reveal">
+                    <div class="card-body">
+                        <h3 class="h5 fw-bold mb-3">Técnicas manuales</h3>
+                        <ul class="mb-4">
+                            <li><strong>Crazy 8s</strong>: 8 ideas en 8 minutos.</li>
+                            <li><strong>Plantillas</strong> con rejilla (móvil/desktop) impresas.</li>
+                            <li><strong>Marcadores gruesos</strong> para pensar macro.</li>
+                        </ul>
+
+                        <h3 class="h5 fw-bold mb-3">Técnicas digitales</h3>
+                        <ul class="mb-4">
+                            <li><strong>FigJam / Figma</strong> para cajas y flechas rápidas.</li>
+                            <li><strong>Balsamiq</strong> para estética “sketch” y feedback temprano.</li>
+                        </ul>
+
+                        <!-- Principios UI/UX como checklist para ocupar espacio con valor -->
+                        <div class="mb-3"><span class="chip">Principios UI/UX aplicados</span></div>
+                        <ul class="principles small">
+                            <li><strong>Consistencia</strong> (componentes y estilos reutilizables)</li>
+                            <li><strong>Jerarquía visual</strong> (títulos 20–24, texto 16)</li>
+                            <li><strong>Espaciado 8‑pt</strong> (8/16/24/32)</li>
+                            <li><strong>Contraste AA</strong> para texto/íconos</li>
+                            <li><strong>Accesibilidad</strong> (roles, alt text)</li>
+                            <li><strong>Hick</strong>: menos opciones, decisiones más rápidas</li>
+                            <li><strong>Fitts</strong>: botones grandes y cercanos</li>
+                            <li><strong>Feedback y estados</strong> (hover, éxito, error)</li>
+                            <li><strong>Gestalt</strong>: proximidad y continuidad</li>
+                            <li><strong>Reglas de Nielsen</strong>: control del usuario, prevención de errores</li>
+                        </ul>
+                    </div>
+
+                    <!-- Imagen pequeña alineada al final para evitar hueco -->
+
+                </div>
+            </div>
+
+            <!-- DERECHA: galería compacta y simétrica -->
+            <div class="col-12 col-lg-6">
+                <div class="card p-4 reveal">
+                    <h3 class="h5 fw-bold mb-3">Ejemplos visuales</h3>
+                    <div class="media-grid">
+                        <figure>
+                            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Notebook_Flat_Icon_Vector.svg" alt="Cuaderno">
+                            <figcaption class="small muted mt-2">Bocetar con papel/cuaderno.</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pencil.svg" alt="Lápiz">
+                            <figcaption class="small muted mt-2">El lápiz basta para explorar.</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wire_frame.svg" alt="Wireframe">
+                            <figcaption class="small muted mt-2">Estructura sin estética.</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Smartphone_icon.svg" alt="Smartphone">
+                            <figcaption class="small muted mt-2">Diseña móvil primero.</figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- 3) HERRAMIENTAS -->
+<section id="herramientas" class="section">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-3"><i class="fas fa-toolbox me-2"></i> 3) Herramientas recomendadas</h2>
+        <p class="muted mb-4">Figma y Balsamiq para wireframing, mockups y prototipado.</p>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card p-4 h-100 reveal">
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Figma-logo.svg" alt="Logo Figma" style="height:42px">
+                        <h3 class="h5 fw-bold mb-0">Figma</h3>
+                    </div>
+                    <ul class="mt-3">
+                        <li><strong>Prototype</strong> (vínculos, animaciones y gestos)</li>
+                        <li>Conexiones desde <strong>componentes principales</strong></li>
+                        <li><strong>Device frames</strong> para contexto real</li>
+                    </ul>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a class="btn btn-outline-primary btn-sm" href="https://help.figma.com/hc/en-us/articles/4404380377367-Add-prototype-connections-from-main-components" target="_blank" rel="noopener">Conexiones</a>
+                        <a class="btn btn-outline-primary btn-sm" href="https://help.figma.com/hc/en-us/articles/4411431245335-View-prototype-connections" target="_blank" rel="noopener">Ver conexiones</a>
+                        <a class="btn btn-outline-primary btn-sm" href="https://help.figma.com/hc/en-us/sections/360006534454-Create-prototypes" target="_blank" rel="noopener">Crear prototipos</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card p-4 h-100 reveal">
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Balsamiq_2025_logo.svg" alt="Logo Balsamiq" style="height:36px">
+                        <h3 class="h5 fw-bold mb-0">Balsamiq</h3>
+                    </div>
+                    <ul class="mt-3">
+                        <li>Estética <em>sketch</em> para centrarse en estructura</li>
+                        <li>Biblioteca de controles y símbolos reutilizables</li>
+                        <li>Feedback temprano con stakeholders</li>
+                    </ul>
+                    <a class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener" href="https://balsamiq.com/support/docs/wireframing/">Cómo wireframear</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4) MOCKUPS: SIN HUECOS + IMAGEN MÁS PEQUEÑA -->
+<section id="mockups" class="section bg-gray-100">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-3"><i class="fas fa-images me-2"></i> 4) Mockups de alta fidelidad</h2>
+        <p class="mb-4">Aterriza la identidad visual (paleta, tipografía, componentes) listos para aprobación.</p>
+
+        <div class="row g-4 align-items-stretch equal-row">
+            <!-- IZQUIERDA: Checklist + “Do/Don’t” para llenar verticalmente -->
+            <div class="col-12 col-lg-7">
+                <div class="card p-4 reveal">
+                    <div class="card-body">
+                        <h3 class="h5 fw-bold">Checklist de mockup en Figma</h3>
+                        <ul>
+                            <li>Aplica tu <strong>sistema de diseño</strong> (botones, inputs, cards, espaciado).</li>
+                            <li>Usa <strong>estilos de color</strong> y <strong>fuentes variables</strong>.</li>
+                            <li>Presenta en <strong>device frames</strong> (móvil/desktop).</li>
+                            <li>Exporta versiones para revisión (PDF/PNG) y gestiona comentarios.</li>
+                        </ul>
+
+                        <!-- Bloque Do/Don't compacto para evitar vacío -->
+                        <div class="row g-3 mt-3">
+                            <div class="col-6">
+                                <div class="p-3 border rounded-3 h-100">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <i class="fa-solid fa-circle-check text-success"></i><strong>Do</strong>
+                                    </div>
+                                    <ul class="small mb-0">
+                                        <li>Contraste AA mínimo 4.5:1</li>
+                                        <li>Grid de 8‑pt</li>
+                                        <li>Estados: hover/activo/error</li>
+                                        <li>Iconografía consistente (línea/grosor)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 border rounded-3 h-100">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <i class="fa-solid fa-circle-xmark text-danger"></i><strong>Don't</strong>
+                                    </div>
+                                    <ul class="small mb-0">
+                                        <li>Texto &lt; 16px</li>
+                                        <li>Demasiadas variantes de botón</li>
+                                        <li>Color como único indicador</li>
+                                        <li>Padding inconsistente</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <a class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener"
+                           href="https://help.figma.com/hc/en-us/articles/360040314193-Guide-to-prototyping-in-Figma">Guía de hi‑fi</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DERECHA: Imagen real más pequeña y centrada -->
+            <div class="col-12 col-lg-5">
+                <div class="card p-4 reveal">
+                    <h3 class="h5 fw-bold">Ejemplo visual</h3>
+                    <img class="mockup-photo shadow-soft"
+                         src="https://commons.wikimedia.org/wiki/Special:FilePath/Phone_7_mockup_over_wood_PSD.jpg"
+                         alt="Mockup de smartphone para presentar UI">
+                    <p class="small muted text-center mt-2 mb-0">Mockup libre (Wikimedia). Ideal para encuadrar pantallas de alta fidelidad.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 5) PROTOTIPADO: DISTRIBUCIÓN SIMÉTRICA Y CONTENIDO LLENO -->
+<section id="prototipado" class="section">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-3"><i class="fas fa-route me-2"></i> 5) Prototipado interactivo</h2>
+        <p class="mb-4">Conecta pantallas, define transiciones y simula flujos de usuario para validar tareas clave.</p>
+
+        <div class="row g-4 align-items-stretch equal-row">
+            <!-- IZQUIERDA: guía + recursos + animación (evita huecos) -->
+            <div class="col-12 col-xl-6">
+                <div class="card p-4 reveal">
+                    <div class="card-body">
+                        <h3 class="h6 text-uppercase text-muted fw-bold mb-2">En Figma</h3>
+                        <ul>
+                            <li><strong>Prototype</strong> para vínculos, animaciones y gestos</li>
+                            <li>Conexiones desde <strong>componentes principales</strong></li>
+                            <li>Revisa con <strong>View prototype connections</strong></li>
+                        </ul>
+
+                        <div class="row g-3 mt-2">
+                            <div class="col-12 col-md-6">
+                                <div class="alert alert-light border h-100">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <i class="fa-regular fa-compass text-primary"></i><strong>Enlaces clave</strong>
+                                    </div>
+                                    <ul class="small mb-0">
+                                        <li><a target="_blank" rel="noopener" href="https://help.figma.com/hc/en-us/articles/4404380377367-Add-prototype-connections-from-main-components">Conexiones desde componentes</a></li>
+                                        <li><a target="_blank" rel="noopener" href="https://help.figma.com/hc/en-us/articles/4411431245335-View-prototype-connections">Ver conexiones</a></li>
+                                        <li><a target="_blank" rel="noopener" href="https://help.figma.com/hc/en-us/sections/360006534454-Create-prototypes">Crear prototipos</a></li>
+                                        <li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/resources/">Device frames (Apple)</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 text-center">
+                                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mobile%20night%20mode.gif"
+                                     alt="Animación de smartphone" class="shadow-soft" style="max-width:220px;border-radius:12px;">
+                                <p class="small muted mt-2 mb-0">Animación ilustrativa (Wikimedia).</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-3">
+                        <h3 class="h6 text-uppercase text-muted fw-bold mb-2">Buenas prácticas</h3>
+                        <ul class="mb-0">
+                            <li>Define <strong>tareas</strong> medibles (p. ej., “crear cuenta en 3 pasos”).</li>
+                            <li>Incluye <strong>estados</strong> (vacío, error, carga) y <strong>feedback</strong>.</li>
+                            <li>Prueba con 5–8 usuarios; mide tiempo y tasa de éxito.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DERECHA: Mini prototipo -->
+            <div class="col-12 col-xl-6" id="simulador">
+                <div class="card p-4 reveal">
+                    <h3 class="h5 fw-bold"><i class="fa-solid fa-mobile-screen-button me-2"></i> Mini prototipo (demo)</h3>
+                    <p class="small muted">Haz clic y recorre el flujo. Ejemplo: onboarding → lista → detalle → éxito.</p>
+
+                    <div class="phone my-3">
+                        <div class="screen active" id="s1">
+                            <div class="toolbar">Onboarding</div>
+                            <div class="p-4">
+                                <h4 class="fw-bold">Bienvenido/a</h4>
+                                <p class="muted">Organiza tus tareas fácilmente.</p>
+                                <button class="btn-cta" onclick="go('s2')">Crear mi lista</button>
+                            </div>
+                        </div>
+                        <div class="screen" id="s2">
+                            <div class="toolbar">Mis tareas</div>
+                            <div class="p-4">
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Diseñar wireframe
+                                        <span class="badge bg-primary rounded-pill">HOY</span>
+                                    </li>
+                                    <li class="list-group-item">Definir paleta</li>
+                                </ul>
+                                <button class="btn-cta" onclick="go('s3')">Añadir nueva</button>
+                            </div>
+                        </div>
+                        <div class="screen" id="s3">
+                            <div class="toolbar">Nueva tarea</div>
+                            <div class="p-4">
+                                <label class="form-label">Título</label>
+                                <input class="form-control mb-3" placeholder="Ej.: Validar prototipo" aria-label="Título de la tarea">
+                                <button class="btn-cta" onclick="go('s4')">Guardar</button>
+                            </div>
+                        </div>
+                        <div class="screen" id="s4">
+                            <div class="toolbar">¡Listo!</div>
+                            <div class="p-4 text-center">
+                                <i class="fa-solid fa-circle-check fa-3x text-success mb-3" aria-hidden="true"></i>
+                                <p class="mb-3">Tarea creada correctamente.</p>
+                                <button class="btn btn-outline-secondary" onclick="go('s2')">Volver a la lista</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="go('s1')">Reiniciar</button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="go('s2')">Ir a Lista</button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="go('s3')">Ir a Formulario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 6) PRÁCTICA -->
+<section id="practica" class="section bg-gray-100">
+    <div class="container">
+        <h2 class="text-3xl font-bold mb-3"><i class="fas fa-tasks me-2"></i> 6) Tarea práctica guiada</h2>
+        <ol class="list-decimal pl-6">
+            <li><strong>Sketch:</strong> 6 variantes de home móvil en 10 minutos (crazy 8s).</li>
+            <li><strong>Wireframe:</strong> elige 2 y pásalos a baja fidelidad (móvil + desktop).</li>
+            <li><strong>Mockup:</strong> aplica tu identidad visual en Figma.</li>
+            <li><strong>Prototipo:</strong> conecta 3 tareas clave (registro, crear ítem, confirmar).</li>
+            <li><strong>Itera:</strong> recoge feedback y repite.</li>
+        </ol>
+        <div class="mt-4 d-flex align-items-center gap-3">
+            <span class="color-swatch" style="background-color:#2b6cb0"></span>
+            <span class="color-swatch" style="background-color:#4299e1"></span>
+            <span class="color-swatch" style="background-color:#bee3f8"></span>
+            <span class="color-swatch" style="background:#f7fafc;border:1px solid #e2e8f0"></span>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-blue-700 text-white py-6">
+    <div class="container text-center">
+        <p class="mb-1">&copy; 2025 Guía UX — Sketch · Wireframe · Mockup · Prototipo</p>
+        <p class="small opacity-75">Paleta y tipografías según tu código. Íconos Font Awesome 6.</p>
+    </div>
+</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click',e=>{
+            const id=a.getAttribute('href'); if(!id || id==='#') return;
+            e.preventDefault(); document.querySelector(id).scrollIntoView({behavior:'smooth',block:'start'});
+        });
+    });
+
+    // Reveal on scroll
+    const io=new IntersectionObserver((entries)=>{
+        entries.forEach(en=>{ if(en.isIntersecting){en.target.classList.add('in'); io.unobserve(en.target);} });
+    },{threshold:.08});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Simulador (prototipo)
+    function go(id){
+        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+</script>
+</body>
+</html>

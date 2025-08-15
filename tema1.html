@@ -67,35 +67,122 @@
                 white-space: nowrap;
             }
         }
+        /* === NAV & HERO — estilo alineado a la página anterior === */
+        :root{
+            --primary:#2b6cb0;        /* azul de tu guía anterior */
+            --primary-300:#bee3f8;
+            --text:#2d3748;
+            --bg:#f7fafb;
+        }
+
+        .navbar{ background-color: var(--primary) !important; }
+        .navbar .navbar-brand, .navbar .nav-link{ color:#fff !important; }
+        .navbar .nav-link:hover{ color:var(--primary-300) !important; }
+        .navbar .navbar-toggler{ border-color:#e2e8f0; }
+        .navbar .navbar-toggler-icon{ filter: invert(1); }
+
+        /* Estado activo visible + foco accesible */
+        .navbar .nav-link.active{
+            color: var(--primary-300) !important;
+            text-decoration: underline;
+            text-underline-offset: 6px;
+        }
+        .navbar .nav-link:focus-visible{
+            outline: 2px dashed var(--primary-300);
+            outline-offset: 3px;
+        }
+
+        /* Botón CTA en navegación */
+        .navbar .btn-cta{
+            background:#fff; color:var(--primary); border:none;
+            border-radius: .5rem; padding:.45rem .9rem; font-weight:600;
+        }
+        .navbar .btn-cta:hover{ box-shadow:0 0 0 3px rgba(190,227,248,.55); }
+
+        /* Enlace "saltar al contenido" (accesibilidad/cX) */
+        .skip-link{
+            position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+        }
+        .skip-link:focus{
+            left:8px; top:8px; width:auto; height:auto; z-index:1050;
+            background:#fff; color:#111; padding:.5rem .75rem; border-radius:.5rem;
+            box-shadow:0 4px 18px rgba(0,0,0,.12);
+        }
+
+        /* HERO con gradiente animado coherente con la otra página */
+        .hero{
+            position:relative; color:#fff; overflow:hidden;
+            background: radial-gradient(1200px 600px at 20% -10%, #4299e1 0, rgba(66,153,225,0) 70%),
+            radial-gradient(800px 400px at 90% 0%, #90cdf4 0, rgba(144,205,244,0) 60%),
+            linear-gradient(135deg, #2b6cb0, #2c5282);
+        }
+        .hero::after{
+            content:""; position:absolute; inset:-40% -20% auto -20%; height:120%;
+            background:conic-gradient(from 0deg,#ffffff22,transparent 60%,#ffffff15);
+            animation: spin 18s linear infinite; filter: blur(60px);
+        }
+        @keyframes spin{ to{ transform: rotate(1turn);} }
+
+        /* Chip estilo “Actualizado 2025” */
+        .chip{
+            display:inline-block; padding:.35rem .6rem; border-radius:999px; font-size:.85rem;
+            background:#ebf8ff; color:#2b6cb0; border:1px solid #bfdbfe;
+        }
+
+        /* Imagen del hero: ocupa todo el ancho del contenedor, responsiva y elegante */
+        .hero-img{
+            width:100%; height:auto; max-width:none; display:block; border-radius:12px;
+            box-shadow:0 10px 24px rgba(0,0,0,.08);
+        }
+        @media (min-width:768px){
+            .hero-img{ aspect-ratio:21/9; object-fit:cover; }
+        }
     </style>
 </head>
 <body>
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+    <a class="skip-link" href="#intro">Saltar al contenido</a>
     <div class="container">
-        <a class="navbar-brand" href="#"><i class="fas fa-laptop-code icon"></i> Diseño de UI</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <a class="navbar-brand" href="#intro"><i class="fas fa-laptop-code me-2"></i> Diseño de UI</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegación">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#intro">Introducción</a></li>
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item"><a class="nav-link" href="#intro" aria-current="page">Introducción</a></li>
                 <li class="nav-item"><a class="nav-link" href="#differences">CX/UX/UI</a></li>
                 <li class="nav-item"><a class="nav-link" href="#characteristics">Características</a></li>
                 <li class="nav-item"><a class="nav-link" href="#principles">Principios</a></li>
                 <li class="nav-item"><a class="nav-link" href="#examples">Ejemplos</a></li>
                 <li class="nav-item"><a class="nav-link" href="#exercise">Ejercicio</a></li>
+                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                    <a class="btn btn-cta btn-sm" href="#exercise"><i class="fa-solid fa-play me-1"></i> Empezar</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 
 <!-- Hero Section -->
-<header class="bg-blue-900 text-white text-center py-16">
+<header class="hero text-white text-center pt-16 pb-10">
     <div class="container">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Tutorial Completo: Introducción al Diseño de UI</h1>
-        <p class="text-lg md:text-xl">Aprende los fundamentos del diseño de interfaces de usuario, principios de usabilidad y casos prácticos de empresas modernas.</p>
-        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Interfaz de usuario moderna" class="mt-6">
+
+        <h1 class="text-4xl md:text-5xl font-bold mt-3">Tutorial Completo: Introducción al Diseño de UI</h1>
+        <p class="mt-3 lead">Aprende los fundamentos del diseño de interfaces de usuario, principios de usabilidad y casos prácticos de empresas modernas.</p>
+    </div>
+
+    <!-- Imagen responsiva, de extremo a extremo en el contenedor -->
+    <div class="container">
+        <img
+                class="hero-img img-fluid w-100 mt-4"
+                src="https://media.istockphoto.com/id/1503858430/es/vector/concepto-de-desarrollo-de-software-de-sitios-web-sitio-de-dise%C3%B1o-web-y-aplicaci%C3%B3n-m%C3%B3vil-en.jpg?s=612x612&w=0&k=20&c=mZoL9erxzcblOQHoprcasZSo1hKHTQq1-lnu2n_9Pto="
+                alt="Ejemplo de tablero de UI con componentes — Visily"
+                loading="eager" decoding="async"
+        />
     </div>
 </header>
 
@@ -311,6 +398,21 @@
                 behavior: 'smooth'
             });
         });
+    });
+    // Resalta la sección activa en el menú al hacer scroll (UX de orientación)
+    document.addEventListener('DOMContentLoaded', ()=>{
+        const sections = Array.from(document.querySelectorAll('section[id]'));
+        const links = Array.from(document.querySelectorAll('.navbar .nav-link'));
+        const map = Object.fromEntries(links.map(l=>[l.getAttribute('href'), l]));
+        const io = new IntersectionObserver((entries)=>{
+            entries.forEach(en=>{
+                if(en.isIntersecting){
+                    const id = '#'+en.target.id;
+                    links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')===id));
+                }
+            });
+        },{rootMargin:'-50% 0px -50% 0px', threshold:0});
+        sections.forEach(s=>io.observe(s));
     });
 </script>
 </body>
