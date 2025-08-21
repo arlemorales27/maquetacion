@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML5 — Guía Profesional de Cero a Experto (2025)</title>
+
+    <!-- Paleta y librerías (mantener estilo similar al anexo) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Prism (resaltado de código) -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet"/>
+
+    <style>
+        :root{
+            /* Paleta basada en el anexo */
+            --primary:#2b6cb0;        /* azul principal */
+            --primary-500:#4299e1;    /* azul medio */
+            --primary-200:#bee3f8;    /* azul claro */
+            --bg:#f7fafc;             /* fondo */
+            --text:#2d3748;           /* texto */
+            --muted:#718096;          /* texto secundario */
+            --card:#ffffff;           /* tarjetas */
+            --success:#22c55e;        /* verde */
+            --danger:#ef4444;         /* rojo */
+            --warning:#f59e0b;        /* ámbar */
+        }
+
+        html,body{scroll-behavior:smooth}
+        body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:var(--bg);}
+
+        /* Navbar */
+        .navbar{background:var(--primary)}
+        .navbar-brand,.nav-link{color:#fff!important}
+        .navbar-brand:hover,.nav-link:hover{color:var(--primary-200)!important}
+        .navbar-toggler{border-color:#e2e8f0}.navbar-toggler-icon{filter:invert(1)}
+
+        /* Hero */
+        .hero{position:relative;color:#fff;overflow:hidden;padding:6rem 0;
+            background: radial-gradient(1200px 600px at 20% -10%, #4299e1 0, rgba(66,153,225,0) 70%),
+            radial-gradient(800px 400px at 90% 0%, #90cdf4 0, rgba(144,205,244,0) 60%),
+            linear-gradient(135deg, #2b6cb0, #2c5282);
+        }
+        .hero:after{content:"";position:absolute;inset:-40% -20% auto -20%;height:120%;
+            background:conic-gradient(from 0deg,#ffffff22,transparent 60%,#ffffff15);
+            animation:spin 18s linear infinite;filter:blur(60px)}
+        @keyframes spin{to{transform:rotate(1turn)}}
+
+        /* Secciones */
+        .section{padding:4rem 0}
+        @media (max-width:768px){.section{padding:2rem 0}}
+
+        /* Tarjetas y utilidades */
+        .card{border:1px solid #e2e8f0;border-radius:14px;background:var(--card);transition:transform .25s,box-shadow .25s}
+        .card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.08)}
+        .shadow-soft{box-shadow:0 10px 24px rgba(0,0,0,.08)}
+        .chip{padding:.35rem .6rem;border-radius:999px;font-size:.85rem;background:#ebf8ff;color:#2b6cb0;border:1px solid #bfdbfe}
+        .muted{color:var(--muted)}
+        .equal-row>[class*="col"]{display:flex}.equal-row .card{display:flex;flex-direction:column;width:100%}
+
+        /* Código */
+        pre[class*="language-"]{border-radius:12px;border:1px solid #e2e8f0}
+        .code-toolbar{position:relative}
+        .copy-btn{position:absolute;top:.5rem;right:.5rem;border:1px solid #e2e8f0;background:#fff;border-radius:8px;padding:.3rem .55rem;font-size:.85rem}
+        .copy-btn:hover{background:#f8fafc}
+
+        /* Tablas responsivas */
+        .table-wrap{overflow-x:auto}
+
+        /* Reveal on scroll */
+        .reveal{opacity:0;transform:translateY(24px);transition:all .6s ease}
+        .reveal.in{opacity:1;transform:none}
+
+        /* Accesibilidad visual foco */
+        :focus-visible{outline:3px solid var(--primary-500);outline-offset:2px}
+
+        /* Footer */
+        footer{background:#1e3a8a;color:#fff}
+    </style>
+</head>
+<body>
+<a class="visually-hidden-focusable position-absolute top-0 start-0 m-2 btn btn-light" href="#contenido" style="z-index:1000">Saltar al contenido</a>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#inicio"><i class="fa-solid fa-code me-2"></i> HTML5 Pro 2025</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBar" aria-label="Abrir navegación">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navBar" class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#fundamentos">Fundamentos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#texto">Texto</a></li>
+                <li class="nav-item"><a class="nav-link" href="#enlaces">Enlaces</a></li>
+                <li class="nav-item"><a class="nav-link" href="#multimedia">Multimedia</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tablas">Tablas</a></li>
+                <li class="nav-item"><a class="nav-link" href="#formularios">Formularios</a></li>
+                <li class="nav-item"><a class="nav-link" href="#semantica">Semántica</a></li>
+                <li class="nav-item"><a class="nav-link" href="#accesibilidad">Accesibilidad</a></li>
+                <li class="nav-item"><a class="nav-link" href="#apis">APIs & Gráficos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#listado">Listado</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header id="inicio" class="hero text-center">
+    <div class="container position-relative">
+        <span class="chip shadow-soft"><i class="fa-solid fa-seedling me-1"></i> De cero a experto</span>
+        <h1 class="text-4xl md:text-5xl font-bold mt-3" style="font-family:'Playfair Display',serif;">HTML5 — Guía completa con ejemplos reales</h1>
+        <p class="lead mt-3">Aprende la estructura, semántica, formularios, multimedia, accesibilidad y APIs modernas con <strong>decenas de etiquetas</strong> y buenas prácticas.</p>
+        <div class="d-flex justify-content-center gap-2 mt-3">
+            <a class="btn btn-light shadow-soft" href="#fundamentos"><i class="fa-solid fa-compass me-2"></i> Empezar</a>
+            <a class="btn btn-outline-light" href="#listado"><i class="fa-solid fa-table-list me-2"></i> Ver listado</a>
+        </div>
+    </div>
+</header>
+
+<main id="contenido">
+    <!-- FUNDAMENTOS -->
+    <section id="fundamentos" class="section">
+        <div class="container">
+            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-layer-group me-2"></i> 1) Fundamentos: estructura mínima</h2>
+            <p class="muted mb-4 reveal">Comprende la anatomía de un documento HTML5 y los metadatos esenciales.</p>
+
+            <div class="row g-4 equal-row">
+                <div class="col-12 col-lg-7">
+                    <div class="card p-4 reveal">
+                        <h3 class="h5 fw-bold">Plantilla base</h3>
+                        <div class="code-toolbar position-relative">
+<pre class="language-markup"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;Mi sitio&lt;/title&gt;
+  &lt;meta name="description" content="Descripción breve de la página"&gt;
+  &lt;link rel="icon" href="/favicon.ico"&gt;
+  &lt;link rel="stylesheet" href="/styles.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;...&lt;/header&gt;
+  &lt;main&gt;Contenido principal&lt;/main&gt;
+  &lt;footer&gt;&amp;copy; 2025&lt;/footer&gt;
+  &lt;script src="/app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                            <button class="copy-btn" aria-label="Copiar código" data-copy>Copiar</button>
+                        </div>
+                        <ul class="small mt-3 mb-0">
+                            <li><strong>&lt;!DOCTYPE html&gt;</strong> activa el modo estándar del navegador.</li>
+                            <li><strong>lang</strong> ayuda a accesibilidad y SEO.</li>
+                            <li><strong>viewport</strong> permite diseño responsivo en móviles.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="card p-4 reveal">
+                        <h3 class="h6 text-uppercase text-muted fw-bold">Metadatos clave</h3>
+                        <ul class="mb-3">
+                            <li><code>&lt;meta name="description"&gt;</code></li>
+                            <li><code>&lt;meta property="og:title/description/image"&gt;</code> (Open Graph)</li>
+                            <li><code>&lt;meta name="theme-color" content="#2b6cb0"&gt;</code></li>
+                            <li><code>&lt;link rel="canonical" href="https://ejemplo.com"&gt;</code></li>
+                        </ul>
+                        <div class="alert alert-light border small mb-0">
+                            <i class="fa-solid fa-circle-info me-1"></i>
+                            Incluye siempre <strong>título único</strong> y una <strong>descripción</strong> por página.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mt-4 alert alert-light border small">
+            <h4 class="h6 fw-bold mb-2"><i class="fa-solid fa-book me-1"></i> Definiciones de esta sección</h4>
+            <ul class="mb-0">
+                <li><code>&lt;!DOCTYPE html&gt;</code>: declara el tipo de documento y activa el modo estándar.</li>
+                <li><code>&lt;html lang&gt;</code>: raíz del documento; <code>lang</code> indica el idioma.</li>
+                <li><code>&lt;head&gt;</code>: metadatos (no visibles) como SEO, estilos y scripts.</li>
+                <li><code>&lt;meta&gt;</code>: metainformación (charset, viewport, descripción).</li>
+                <li><code>&lt;title&gt;</code>: título que ves en la pestaña del navegador.</li>
+                <li><code>&lt;link&gt;</code>: enlaza recursos externos (CSS, iconos).
+                </li>
+                <li><code>&lt;script&gt;</code>: carga/embebe JavaScript.</li>
+                <li><code>&lt;body&gt;</code>: contenido visible de la página.</li>
+                <li><code>&lt;header&gt;</code>/<code>&lt;main&gt;</code>/<code>&lt;footer&gt;</code>: áreas semánticas del layout.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- TEXTO -->
+    <section id="texto" class="section bg-gray-100">
+        <div class="container">
+            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-font me-2"></i> 2) Texto y tipografía</h2>
+            <p class="muted mb-4 reveal">Titulares, énfasis, citas, código y tiempo/fecha.</p>
+
+            <div class="row g-4 equal-row">
+                <div class="col-12 col-lg-7">
+                    <div class="card p-4 reveal">
+                        <h3 class="h5 fw-bold">Etiquetas comunes</h3>
+                        <div class="code-toolbar position-relative">
+<pre class="language-markup"><code>&lt;h1&gt;Título 1&lt;/h1&gt;
+&lt;h2&gt;Título 2&lt;/h2&gt;
+&lt;p&gt;Un &lt;strong&gt;texto importante&lt;/strong&gt; con &lt;em&gt;énfasis&lt;/em&gt; y &lt;mark&gt;resaltado&lt;/mark&gt;.&lt;/p&gt;
+&lt;p&gt;Atajos: presiona &lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;S&lt;/kbd&gt; para guardar.&lt;/p&gt;
+&lt;p&gt;Precio: &lt;small&gt;IVA incluido&lt;/small&gt;. Agua: H&lt;sub&gt;2&lt;/sub&gt;O. x&lt;sup&gt;2&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;abbr title="Cascading Style Sheets"&gt;CSS&lt;/abbr&gt; acelera el estilo.&lt;/p&gt;
+&lt;time datetime="2025-08-21"&gt;21 de agosto de 2025&lt;/time&gt;
+&lt;blockquote cite="https://ejemplo.com"&gt;Una cita breve.&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;console.log('hola');&lt;/code&gt;&lt;/pre&gt;</code></pre>
+                            <button class="copy-btn" aria-label="Copiar código" data-copy>Copiar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="card p-4 reveal">
+                        <h3 class="h6 text-uppercase text-muted fw-bold">Consejos</h3>
+                        <ul class="small mb-0">
+                            <li>Usa un solo <strong>H1</strong> por página.</li>
+                            <li>Evita usar etiquetas solo para estilizar (usa CSS).</li>
+                            <li>Incluye atributo <code>cite</code> en citas cuando corresponda.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mt-4 alert alert-light border small">
+            <h4 class="h6 fw-bold mb-2"><i class="fa-solid fa-book me-1"></i> Definiciones de esta sección</h4>
+            <ul class="mb-0">
+                <li><code>&lt;h1..h6&gt;</code>: niveles jerárquicos de encabezado.</li>
+                <li><code>&lt;p&gt;</code>: párrafo de texto.</li>
+                <li><code>&lt;strong&gt;</code>/<code>&lt;em&gt;</code>/<code>&lt;mark&gt;</code>: importancia, énfasis y resaltado.</li>
+                <li><code>&lt;kbd&gt;</code>: secuencias de teclas.</li>
+                <li><code>&lt;small&gt;</code>: anotaciones/nota al pie.</li>
+                <li><code>&lt;sub&gt;</code>/<code>&lt;sup&gt;</code>: subíndices/superíndices.</li>
+                <li><code>&lt;abbr&gt;</code>: abreviatura con título explicativo.</li>
+                <li><code>&lt;time datetime&gt;</code>: fecha/hora legible por máquinas.</li>
+                <li><code>&lt;blockquote cite&gt;</code>: cita en bloque con fuente.</li>
+                <li><code>&lt;pre&gt;</code>/<code>&lt;code&gt;</code>: texto preformateado y fragmentos de código.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ENLACES Y NAVEGACIÓN -->
+    <section id="enlaces" class="section">
+        <div class="container">
+            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-link me-2"></i> 3) Enlaces y navegación</h2>
+            <p class="muted mb-4 reveal">Buenas prácticas para &lt;a&gt; y estructuras de navegación.</p>
+
+            <div class="row g-4 equal-row">
+                <div class="col-12 col-lg-7">
+                    <div class="card p-4 reveal">
+                        <h3 class="h5 fw-bold">Enlaces seguros y accesibles</h3>
+                        <div class="code-toolbar position-relative">
+<pre class="language-markup"><code>&lt;nav aria-label="Navegación principal"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Inicio&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#productos"&gt;Productos&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="https://sitio-externo.com" target="_blank" rel="noopener noreferrer"&gt;Externo&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+
+&lt;a href="mailto:contacto@ejemplo.com"&gt;Escríbenos&lt;/a&gt;
+&lt;a href="tel:+573001112233"&gt;Llámanos&lt;/a&gt;</code></pre>
+                            <button class="copy-btn" aria-label="Copiar código" data-copy>Copiar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="card p-4 reveal">
+                        <h3 class="h6 text-uppercase text-muted fw-bold">Tips</h3>
+                        <ul class="small mb-0">
+                            <li><code>rel="noopener noreferrer"</code> en enlaces externos abre en nueva pestaña sin riesgos.</li>
+                            <li>Usa textos de enlace descriptivos (evita “haz clic aquí”).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mt-4 alert alert-light border small">
+            <h4 class="h6 fw-bold mb-2"><i class="fa-solid fa-book me-1"></i> Definiciones de esta sección</h4>
+            <ul class="mb-0">
+                <li><code>&lt;nav&gt;</code>: bloque de navegación.</li>
+                <li><code>&lt;ul&gt;</code>/<code>&lt;li&gt;</code>: listas de elementos.</li>
+                <li><code>&lt;a href&gt;</code>: enlace; <code>target="_blank"</code> abre nueva pestaña; <code>rel="noopener noreferrer"</code> mejora se
+
+                    <!-- MULTIMEDIA -->
+                    <section id="multimedia" class="section bg-gray-100">
+                        <div class="container">
+                            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-photo-film me-2"></i> 4) Imágenes y multimedia</h2>
+                            <p class="muted mb-4 reveal">Imágenes responsivas, figure/picture, audio/video con subtítulos.</p>
+
+                            <div class="row g-4 equal-row">
+                                <div class="col-12 col-lg-7">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h5 fw-bold">Imágenes semánticas</h3>
+                                        <div class="code-toolbar position-relative">
+<pre class="language-markup"><code>&lt;figure&gt;
+  &lt;picture&gt;
+    &lt;source srcset="paisaje.webp" type="image/webp"&gt;
+    &lt;img src="paisaje.jpg" alt="Paisaje montañoso al amanecer" width="800" height="533" loading="lazy"&gt;
+  &lt;/picture&gt;
+  &lt;figcaption&gt;Figura 1. Imagen con &lt;code&gt;&lt;picture&gt;&lt;/code&gt; y &lt;code&gt;&lt;figcaption&gt;&lt;/code&gt;.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;audio controls&gt;
+  &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+  Tu navegador no soporta el elemento audio.
+&lt;/audio&gt;
+
+&lt;video controls width="480" poster="poster.jpg"&gt;
+  &lt;source src="demo.mp4" type="video/mp4"&gt;
+  &lt;track kind="subtitles" src="subtitulos.vtt" srclang="es" label="Español" default&gt;
+  Tu navegador no soporta el elemento video.
+&lt;/video&gt;
+
+&lt;iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video de ejemplo" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</code></pre>
+                                            <button class="copy-btn" aria-label="Copiar código" data-copy>Copiar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-5">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h6 text-uppercase text-muted fw-bold">Buenas prácticas</h3>
+                                        <ul class="small mb-0">
+                                            <li><strong>Alt</strong> descriptivo en imágenes informativas.</li>
+                                            <li>Usa <code>loading="lazy"</code> para rendimiento.</li>
+                                            <li>Incluye pistas &lt;track&gt; (subtítulos) en video.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- TABLAS -->
+                    <section id="tablas" class="section">
+                        <div class="container">
+                            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-table me-2"></i> 5) Tablas semánticas</h2>
+                            <p class="muted mb-4 reveal">Estructuras accesibles con &lt;caption&gt;, &lt;thead&gt;, &lt;tbody&gt;, &lt;tfoot&gt; y alcances.</p>
+
+                            <div class="card p-4 reveal">
+                                <div class="code-toolbar position-relative">
+<pre class="language-markup"><code>&lt;div class="table-wrap"&gt;
+  &lt;table&gt;
+    &lt;caption&gt;Ventas trimestrales 2025&lt;/caption&gt;
+    &lt;colgroup&gt;
+      &lt;col span="1"&gt;
+      &lt;col span="3"&gt;
+    &lt;/colgroup&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;&lt;th scope="col"&gt;Región&lt;/th&gt;&lt;th scope="col"&gt;Q1&lt;/th&gt;&lt;th scope="col"&gt;Q2&lt;/th&gt;&lt;th scope="col"&gt;Q3&lt;/th&gt;&lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;&lt;th scope="row"&gt;LatAm&lt;/th&gt;&lt;td&gt;120&lt;/td&gt;&lt;td&gt;140&lt;/td&gt;&lt;td&gt;160&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;th scope="row"&gt;EU&lt;/th&gt;&lt;td&gt;90&lt;/td&gt;&lt;td&gt;120&lt;/td&gt;&lt;td&gt;150&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;
+    &lt;tfoot&gt;
+      &lt;tr&gt;&lt;th scope="row"&gt;Total&lt;/th&gt;&lt;td colspan="3"&gt;680&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tfoot&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+                                    <button class="copy-btn" aria-label="Copiar código" data-copy>Copiar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- FORMULARIOS -->
+                    <section id="formularios" class="section bg-gray-100">
+                        <div class="container">
+                            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-forms " style="display:none"></i><i class="fa-regular fa-clipboard me-2"></i> 6) Formularios modernos</h2>
+                            <p class="muted mb-4 reveal">Tipos de input, validación nativa y elementos avanzados.</p>
+
+                            <div class="row g-4 equal-row">
+                                <div class="col-12 col-xl-7">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h5 fw-bold">Formulario de ejemplo</h3>
+                                        <form id="demoForm" novalidate class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="name" class="form-label">Nombre</label>
+                                                <input id="name" name="name" class="form-control" required minlength="2" placeholder="Ada"/>
+                                                <div class="invalid-feedback">Ingresa al menos 2 caracteres.</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input id="email" name="email" type="email" class="form-control" required placeholder="ada@ejemplo.com"/>
+                                                <div class="invalid-feedback">Introduce un correo válido.</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="url" class="form-label">Sitio web</label>
+                                                <input id="url" name="url" type="url" class="form-control" placeholder="https://tu-sitio.com"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="tel" class="form-label">Teléfono</label>
+                                                <input id="tel" name="tel" type="tel" class="form-control" inputmode="tel" pattern="^[0-9\-\+\s]{7,}$" placeholder="300 111 2233"/>
+                                                <div class="invalid-feedback">Usa solo números y símbolos (+ -).</div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="color" class="form-label">Color favorito</label>
+                                                <input id="color" name="color" type="color" class="form-control form-control-color" value="#2b6cb0"/>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="range" class="form-label">Experiencia (0–10)</label>
+                                                <input id="range" name="range" type="range" class="form-range" min="0" max="10" step="1" value="5" oninput="expOut.value=this.value">
+                                                <output id="expOut">5</output>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="role" class="form-label">Rol</label>
+                                                <select id="role" name="role" class="form-select" required>
+                                                    <option value="" selected disabled>Selecciona</option>
+                                                    <option>Estudiante</option>
+                                                    <option>Frontend</option>
+                                                    <option>Full‑stack</option>
+                                                </select>
+                                                <div class="invalid-feedback">Selecciona un rol.</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="lang" class="form-label">Lenguaje (autocompletar)</label>
+                                                <input id="lang" list="langs" class="form-control" placeholder="HTML"/>
+                                                <datalist id="langs">
+                                                    <option value="HTML"><option value="CSS"><option value="JavaScript">
+                                                </datalist>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="bio" class="form-label">Biografía</label>
+                                                <textarea id="bio" class="form-control" rows="3" maxlength="140" placeholder="Hasta 140 caracteres..."></textarea>
+                                                <div class="form-text">Usa &lt;textarea&gt; para textos largos.</div>
+                                            </div>
+                                            <fieldset class="col-12">
+                                                <legend class="col-form-label pt-0">Preferencias</legend>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="news" value="news"><label class="form-check-label" for="news">Boletín</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="modo" id="modo-claro" value="claro" checked><label class="form-check-label" for="modo-claro">Claro</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="modo" id="modo-oscuro" value="oscuro"><label class="form-check-label" for="modo-oscuro">Oscuro</label>
+                                                </div>
+                                            </fieldset>
+                                            <div class="col-12">
+                                                <meter id="nivel" min="0" max="100" value="65" title="Nivel del curso">65%</meter>
+                                                <progress id="progreso" max="100" value="30" class="ms-2">30%</progress>
+                                            </div>
+                                            <div class="col-12 d-flex gap-2">
+                                                <button class="btn btn-primary"><i class="fa-solid fa-paper-plane me-1"></i> Enviar</button>
+                                                <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+                                            </div>
+                                            <output id="formOut" class="mt-2"></output>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-5">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h6 text-uppercase text-muted fw-bold">Claves de validación</h3>
+                                        <ul class="small">
+                                            <li><code>required</code>, <code>pattern</code>, <code>min/max</code>, <code>minlength/maxlength</code>.</li>
+                                            <li>Usa <code>type=email|url|date|color|range</code> para validación y UI nativa.</li>
+                                            <li>Asocia <code>&lt;label for&gt;</code> a cada control.</li>
+                                            <li>Evita bloquear con JS: apóyate en validación nativa primero.</li>
+                                        </ul>
+                                        <details>
+                                            <summary><strong>Extras útiles</strong></summary>
+                                            <ul class="small mt-2 mb-0">
+                                                <li><code>&lt;output&gt;</code> para resultados de cálculo.</li>
+                                                <li><code>inputmode</code> optimiza el teclado en móviles.</li>
+                                                <li><code>&lt;fieldset&gt;</code> y <code>&lt;legend&gt;</code> agrupan y nombran controles.</li>
+                                            </ul>
+                                        </details>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SEMÁNTICA -->
+                    <section id="semantica" class="section">
+                        <div class="container">
+                            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-diagram-project me-2"></i> 7) Semántica y estructura</h2>
+                            <p class="muted mb-4 reveal">Estructura con &lt;header&gt;, &lt;main&gt;, &lt;section&gt;, &lt;article&gt;, &lt;aside&gt; y &lt;footer&gt; + componentes interactivos.</p>
+
+                            <div class="row g-4 equal-row">
+                                <div class="col-12 col-lg-7">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h5 fw-bold">Layout semántico típico</h3>
+                                        <div class="code-toolbar position-relative">
+<pre class="language-markup"><code>&lt;header&gt;
+  &lt;h1&gt;Mi Blog&lt;/h1&gt;
+  &lt;nav aria-label="Principal"&gt;...&lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;article&gt;
+    &lt;header&gt;&lt;h2&gt;Entrada&lt;/h2&gt;&lt;/header&gt;
+    &lt;p&gt;Contenido...&lt;/p&gt;
+    &lt;footer&gt;&lt;address&gt;Por &lt;a href="mailto:ana@blog.com"&gt;Ana&lt;/a&gt;&lt;/address&gt;&lt;/footer&gt;
+  &lt;/article&gt;
+  &lt;aside&gt;Contenido relacionado&lt;/aside&gt;
+&lt;/main&gt;
+&lt;footer&gt;© 2025&lt;/footer&gt;</code></pre>
+                                            <button class="copy-btn" aria-label="Copiar código" data-copy>Copiar</button>
+                                        </div>
+
+                                        <h3 class="h6 text-uppercase text-muted fw-bold mt-4">Detalles / diálogo</h3>
+                                        <div class="code-toolbar position-relative">
+<pre class="language-markup"><code>&lt;details&gt;
+  &lt;summary&gt;Ver más&lt;/summary&gt;
+  &lt;p&gt;Contenido desplegable.&lt;/p&gt;
+&lt;/details&gt;
+
+&lt;dialog id="dlg"&gt;
+  &lt;p&gt;Diálogo nativo&lt;/p&gt;
+  &lt;form method="dialog"&gt;
+    &lt;button&gt;Cerrar&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/dialog&gt;
+&lt;button onclick="document.getElementById('dlg').showModal()"&gt;Abrir diálogo&lt;/button&gt;</code></pre>
+                                            <button class="copy-btn" aria-label="Copiar código" data-copy>Copiar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-5">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h6 text-uppercase text-muted fw-bold">Plantillas y componentes</h3>
+                                        <div class="code-toolbar position-relative">
+<pre class="language-markup"><code>&lt;template id="cardTpl"&gt;
+  &lt;article class="card p-3"&gt;
+    &lt;h4&gt;&lt;slot name="titulo"&gt;Título&lt;/slot&gt;&lt;/h4&gt;
+    &lt;p&gt;&lt;slot name="contenido"&gt;Texto&lt;/slot&gt;&lt;/p&gt;
+  &lt;/article&gt;
+&lt;/template&gt;</code></pre>
+                                        </div>
+                                        <p class="small mb-0">Usa &lt;template&gt; para clonar fragmentos desde JS.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ACCESIBILIDAD -->
+                    <section id="accesibilidad" class="section bg-gray-100">
+                        <div class="container">
+                            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-universal-access me-2"></i> 8) Accesibilidad (a11y)</h2>
+                            <p class="muted mb-4 reveal">Roles ARIA, etiquetas, foco y atajos.</p>
+
+                            <div class="row g-4 equal-row">
+                                <div class="col-12 col-lg-7">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h5 fw-bold">Ejemplos rápidos</h3>
+                                        <div class="code-toolbar position-relative">
+<pre class="language-markup"><code>&lt;button aria-pressed="false" aria-label="Abrir menú"&gt;
+  &lt;i class="fa-solid fa-bars" aria-hidden="true"&gt;&lt;/i&gt;
+&lt;/button&gt;
+
+&lt;nav aria-label="Migas de pan"&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Inicio&lt;/a&gt;&lt;/li&gt;
+    &lt;li aria-current="page"&gt;Artículo&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+                                            <button class="copy-btn" aria-label="Copiar código" data-copy>Copiar</button>
+                                        </div>
+                                        <ul class="small mt-2 mb-0">
+                                            <li>Proporciona <strong>alternativas de texto</strong> y <strong>etiquetas</strong>.</li>
+                                            <li>Controla el <strong>foco</strong> y respeta <kbd>Tab</kbd>/<kbd>Shift+Tab</kbd>.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-5">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h6 text-uppercase text-muted fw-bold">Checklist mínimo</h3>
+                                        <ul class="small mb-0">
+                                            <li>Contraste AA (4.5:1 texto normal).</li>
+                                            <li>Secuencia lógica de encabezados.</li>
+                                            <li>Estados visibles: foco/hover/activo.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- APIs Y GRÁFICOS -->
+                    <section id="apis" class="section">
+                        <div class="container">
+                            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-chart-line me-2"></i> 9) APIs y gráficos: Canvas &amp; SVG</h2>
+                            <p class="muted mb-4 reveal">Dibuja con &lt;canvas&gt;, usa SVG inline y aplica &lt;template&gt; desde JS.</p>
+
+                            <div class="row g-4 equal-row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h5 fw-bold">Canvas</h3>
+                                        <canvas id="lienzo" width="320" height="180" class="border rounded w-100" aria-label="Gráfico de barras simple"></canvas>
+                                        <p class="small mt-2 mb-0">Ejemplo: dibujo de barras con API 2D.</p>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h5 fw-bold">SVG inline</h3>
+                                        <pre class="language-markup"><code>&lt;svg width="220" height="120" viewBox="0 0 220 120" role="img" aria-labelledby="t1"&gt;
+  &lt;title id="t1"&gt;Rectángulos de ejemplo&lt;/title&gt;
+  &lt;rect x="10" y="10" width="80" height="100" rx="12" fill="#2b6cb0"/&gt;
+  &lt;circle cx="150" cy="60" r="40" fill="#4299e1"/&gt;
+  &lt;text x="12" y="28" fill="#fff" font-size="12"&gt;HTML5&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-4 mt-1 equal-row">
+                                <div class="col-12">
+                                    <div class="card p-4 reveal">
+                                        <h3 class="h6 text-uppercase text-muted fw-bold">Microdatos / SEO con JSON‑LD</h3>
+                                        <pre class="language-markup"><code>&lt;script type="application/ld+json"&gt;{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Guía HTML5",
+  "datePublished":"2025-08-21",
+  "author":{"@type":"Person","name":"Tu Nombre"}
+}&lt;/script&gt;</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CHULETA -->
+                    <section id="listado" class="section bg-gray-100">
+                        <div class="container">
+                            <h2 class="text-3xl font-bold mb-2 reveal"><i class="fa-solid fa-list-check me-2"></i> 10) Listado rápida de etiquetas</h2>
+                            <p class="muted mb-3 reveal">Listado de muchas etiquetas relevantes con su propósito.</p>
+
+                            <div class="card p-4 reveal">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <ul class="small mb-0">
+                                            <li><code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code></li>
+                                            <li><code>&lt;meta&gt;</code>, <code>&lt;title&gt;</code>, <code>&lt;link&gt;</code>, <code>&lt;script&gt;</code></li>
+                                            <li><code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code></li>
+                                            <li><code>&lt;article&gt;</code>, <code>&lt;aside&gt;</code>, <code>&lt;footer&gt;</code></li>
+                                            <li><code>&lt;h1..h6&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;br&gt;</code></li>
+                                            <li><code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;mark&gt;</code>, <code>&lt;small&gt;</code></li>
+                                            <li><code>&lt;abbr&gt;</code>, <code>&lt;time&gt;</code>, <code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code></li>
+                                            <li><code>&lt;blockquote&gt;</code>, <code>&lt;q&gt;</code>, <code>&lt;cite&gt;</code>, <code>&lt;address&gt;</code></li>
+                                            <li><code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;dl&gt;</code>, <code>&lt;dt&gt;</code>, <code>&lt;dd&gt;</code></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <ul class="small mb-0">
+                                            <li><code>&lt;img&gt;</code>, <code>&lt;picture&gt;</code>, <code>&lt;figure&gt;</code>, <code>&lt;figcaption&gt;</code></li>
+                                            <li><code>&lt;audio&gt;</code>, <code>&lt;video&gt;</code>, <code>&lt;track&gt;</code>, <code>&lt;source&gt;</code></li>
+                                            <li><code>&lt;table&gt;</code>, <code>&lt;caption&gt;</code>, <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tfoot&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;colgroup&gt;</code>, <code>&lt;col&gt;</code></li>
+                                            <li><code>&lt;form&gt;</code>, <code>&lt;label&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;button&gt;</code></li>
+                                            <li><code>&lt;fieldset&gt;</code>, <code>&lt;legend&gt;</code>, <code>&lt;datalist&gt;</code>, <code>&lt;output&gt;</code></li>
+                                            <li><code>&lt;progress&gt;</code>, <code>&lt;meter&gt;</code></li>
+                                            <li><code>&lt;details&gt;</code>, <code>&lt;summary&gt;</code>, <code>&lt;dialog&gt;</code></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <ul class="small mb-0">
+                                            <li><code>&lt;template&gt;</code>, <code>&lt;slot&gt;</code> (Web Components)</li>
+                                            <li><code>&lt;canvas&gt;</code>, <code>&lt;svg&gt;</code></li>
+                                            <li><code>&lt;iframe&gt;</code>, <code>&lt;embed&gt;</code>, <code>&lt;object&gt;</code></li>
+                                            <li><code>&lt;noscript&gt;</code></li>
+                                            <li>Atributos comunes: <code>class</code>, <code>id</code>, <code>style</code>, <code>hidden</code>, <code>title</code>, <code>tabindex</code>, <code>aria-*</code></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-info border mt-3 small"><i class="fa-solid fa-lightbulb me-1"></i> Consejo: Abre las herramientas del navegador y usa el inspector para ver el árbol de accesibilidad.</div>
+                        </div>
+                    </section>
+</main>
+
+<footer class="py-6">
+    <div class="container text-center">
+        <p class="mb-1">&copy; 2025 Guía HTML5 — Cero a Experto</p>
+        <p class="small opacity-75">Diseño con paleta del anexo. Íconos Font Awesome 6. Código resaltado con Prism.</p>
+    </div>
+</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+<script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click',e=>{
+            const id=a.getAttribute('href'); if(!id || id==='#') return;
+            const tgt=document.querySelector(id); if(!tgt) return;
+            e.preventDefault(); tgt.scrollIntoView({behavior:'smooth',block:'start'});
+        });
+    });
+
+    // Reveal on scroll
+    const io=new IntersectionObserver((entries)=>{
+        entries.forEach(en=>{ if(en.isIntersecting){en.target.classList.add('in'); io.unobserve(en.target);} });
+    },{threshold:.08});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Botón copiar en bloques de código
+    document.querySelectorAll('[data-copy]').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+            const pre=btn.previousElementSibling; const code=pre?.querySelector('code');
+            if(!code) return;
+            const texto=code.textContent;
+            navigator.clipboard.writeText(texto).then(()=>{
+                const prev=btn.textContent; btn.textContent='Copiado';
+                setTimeout(()=>btn.textContent=prev,1200);
+            });
+        });
+    });
+
+    // Validación Bootstrap + nativa
+    (function(){
+        const form=document.getElementById('demoForm');
+        if(!form) return;
+        form.addEventListener('submit',function(e){
+            if(!form.checkValidity()){
+                e.preventDefault(); e.stopPropagation();
+            }else{
+                e.preventDefault();
+                const datos=new FormData(form);
+                const salida=[...datos.entries()].map(([k,v])=>`${k}: ${v}`).join(' | ');
+                document.getElementById('formOut').textContent='Enviado → '+salida;
+            }
+            form.classList.add('was-validated');
+        });
+    })();
+
+    // Canvas demo
+    (function(){
+        const c=document.getElementById('lienzo'); if(!c) return; const ctx=c.getContext('2d');
+        const w=c.width, h=c.height; ctx.fillStyle='#f1f5f9'; ctx.fillRect(0,0,w,h);
+        const datos=[80,120,60,150,90]; const barW=40; const gap=20; const base=h-20;
+        ctx.strokeStyle='#cbd5e1'; ctx.beginPath(); ctx.moveTo(10,base); ctx.lineTo(w-10,base); ctx.stroke();
+        datos.forEach((v,i)=>{
+            const x=20+i*(barW+gap), y=base-v;
+            ctx.fillStyle=i%2? '#4299e1':'#2b6cb0';
+            ctx.fillRect(x,y,barW,v);
+            ctx.fillStyle='#0f172a'; ctx.font='10px Inter'; ctx.fillText(String(v), x+8, y-4);
+        });
+    })();
+</script>
+</body>
+</html>
