@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTML5 Tag Quest — Aprende Jugando</title>
+    <style>
+        :root{--bg:#0e0f1a;--panel:#15172b;--panel-2:#101226;--text:#e9ecff;--muted:#a5b0ff;--accent:#7c5cff;--accent-2:#31d0aa;--warn:#ffb057;--danger:#ff6b7a;--ok:#2ad18b;--shadow:0 20px 40px rgba(0,0,0,.35);}
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:radial-gradient(1200px 700px at 20% -10%,#23264a,transparent),radial-gradient(900px 500px at 110% 10%,#1a1d3a,transparent),var(--bg);color:var(--text);}
+        a{color:inherit;text-decoration:none}
+        .app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
+        header{position:sticky;top:0;z-index:3;background:linear-gradient(90deg,var(--panel),#131735 60%,var(--panel));box-shadow:var(--shadow);padding:14px 18px;border-bottom:1px solid #242853}
+        .brand{display:flex;align-items:center;gap:12px}
+        .logo{width:36px;height:36px;border-radius:10px;background:conic-gradient(from 0deg, var(--accent), var(--accent-2), var(--warn), var(--accent));filter:drop-shadow(0 6px 14px rgba(124,92,255,.35));}
+        .brand h1{font-size:18px;margin:0;letter-spacing:.5px}
+        .brand small{display:block;color:var(--muted)}
+
+        .grid{display:grid;grid-template-columns:300px 1fr 340px;gap:16px;padding:18px;}
+        .panel{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid #242853;border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+        .panel h2{margin:.2rem 0 8px;font-size:16px;color:#cfd6ff}
+
+        .score{position:sticky;top:84px}
+        .meter{height:10px;background:#0b0d1c;border-radius:999px;overflow:hidden;border:1px solid #2a2f69}
+        .meter>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0}
+        .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+        .stat{background:#0f1230;border:1px solid #262c66;border-radius:12px;padding:10px;text-align:center}
+        .stat .num{font-weight:700;font-size:22px}
+        .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+        .badge{padding:8px 10px;border:1px dashed #3a428d;border-radius:12px;background:#0e1333;font-size:12px}
+
+        .card{display:grid;grid-template-rows:auto auto auto 1fr auto;gap:12px}
+        .tagname{font-size:28px;margin:0;letter-spacing:.4px}
+        .category{color:var(--muted);font-size:13px}
+        .definition{background:#0f1230;border:1px solid #2a2f69;border-radius:12px;padding:12px;line-height:1.5}
+        .howto{background:#0f1230;border:1px dashed #2a2f69;border-radius:12px;padding:10px;color:#cdd3ff}
+        .example{background:#0d1028;border:1px solid #27307c;border-radius:12px;padding:12px}
+        pre{margin:0;overflow:auto;max-height:260px}
+        code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;font-size:13px;}
+
+        .challenge{background:#0d122c;border:1px solid #2a2f69;border-radius:14px;padding:12px}
+        .q{font-weight:600;margin-bottom:8px}
+        .options{display:grid;gap:8px;margin-bottom:10px}
+        .option{display:block;border:1px solid #2a2f69;background:#0f1433;border-radius:10px;padding:10px;transition:transform .06s ease, border-color .3s}
+        .option:hover{transform:translateY(-1px);border-color:#4a53c7}
+        .option.selected{outline:2px solid #6d79ff}
+
+        /* Drag & Drop Builder - 6 piezas */
+        .builder{display:grid;gap:10px}
+        .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+        .dropzone{min-height:48px;border:2px dashed #394092;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#0b1030;padding:8px;text-align:center}
+        .dropzone.filled{border-style:solid;background:#0f153b}
+        .pieces{display:flex;flex-wrap:wrap;gap:8px}
+        .piece{user-select:none;cursor:grab;border:1px solid #3a45a3;background:linear-gradient(180deg,#1b2370,#16205b);border-radius:10px;padding:8px 10px}
+        .piece:active{cursor:grabbing}
+        .hint{font-size:12px;color:var(--muted)}
+
+        .controls{display:flex;gap:8px;flex-wrap:wrap}
+        .btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(180deg,#1f2a78,#1a235f);border:1px solid #3f49aa;padding:10px 14px;border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,.25);font-weight:600}
+        .btn.secondary{background:linear-gradient(180deg,#172058,#141b45);border-color:#303a8e}
+        .muted{color:#b9c3ff}
+
+        .ency{position:sticky;top:84px;max-height:calc(100vh - 120px);overflow:auto}
+        .list{display:grid;gap:8px}
+        .tagpill{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border:1px solid #2a2f69;border-radius:10px;background:#0e1231;font-size:12px}
+        .tagpill.locked{opacity:.6}
+
+        .toast{position:fixed;right:18px;bottom:18px;background:#0e1333;border:1px solid #2d346c;border-radius:12px;padding:12px;box-shadow:var(--shadow);display:none}
+
+        .sparkle{position:absolute;pointer-events:none;inset:0;overflow:hidden}
+        .sparkle i{position:absolute;width:6px;height:6px;background:radial-gradient(#fff,rgba(255,255,255,0));border-radius:999px;opacity:.6;animation:float 5s linear infinite}
+        @keyframes float{from{transform:translateY(140vh)}to{transform:translateY(-20vh)}}
+
+        .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;--dx:0px}
+        .confetti i{position:absolute;width:8px;height:14px;background:conic-gradient(from 0deg,var(--accent),var(--warn),var(--accent-2));opacity:.9;transform:rotate(15deg);animation:fall 700ms ease-out forwards}
+        @keyframes fall{to{transform:translate(var(--dx), 80vh) rotate(360deg);opacity:0}}
+
+        @media (max-width: 1100px){
+            .grid{grid-template-columns:1fr;}
+            .ency,.score{position:relative;top:auto;max-height:none}
+            .slots{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <header>
+        <div class="brand">
+            <div class="logo" aria-hidden="true"></div>
+            <div>
+                <h1>HTML5 Tag Quest <small>— Aprende jugando con opciones y arrastrar & soltar 🎮✨</small></h1>
+                <small class="muted">1) Lee definición y ejemplo • 2) Contesta el Reto 1 • 3) Construye 6 piezas en el Reto 2 • 4) Comprobar.</small>
+            </div>
+        </div>
+    </header>
+
+    <div class="grid">
+        <aside class="panel score" aria-labelledby="score-title">
+            <h2 id="score-title">Progreso</h2>
+            <div class="meter" aria-label="progreso"><span id="progress"></span></div>
+            <div class="stats" role="group" aria-label="estadísticas">
+                <div class="stat" title="Puntos de experiencia"><div class="num" id="xp">0</div><div class="muted">XP</div></div>
+                <div class="stat" title="Etiquetas dominadas"><div class="num" id="mastered">0</div><div class="muted">Dominadas</div></div>
+            </div>
+            <div class="badges" id="badges" aria-label="insignias"></div>
+        </aside>
+
+        <main class="panel card" aria-live="polite">
+            <div>
+                <div class="category" id="category">—</div>
+                <h2 class="tagname" id="tagname">Etiqueta</h2>
+            </div>
+            <div class="definition" id="definition">Descripción de la etiqueta seleccionada.</div>
+            <div class="howto">
+                <strong>Reto 2 (6 piezas):</strong> apertura → texto → <code>&lt;mark&gt;</code> → texto marcado → <code>&lt;/mark&gt;</code> → cierre.
+            </div>
+            <div class="example">
+                <div class="muted" style="margin-bottom:6px">Ejemplo</div>
+                <pre><code id="example"></code></pre>
+            </div>
+            <div class="challenge">
+                <div class="q" id="question">Reto 1: …</div>
+                <div class="options" id="options"></div>
+                <div class="q" style="margin-top:8px">Reto 2: construye el fragmento correcto</div>
+                <div class="builder" id="builder">
+                    <div class="hint" id="builderHint">Coloca todas las piezas en los espacios (6 en total).</div>
+                    <div class="slots" id="slots"></div>
+                    <div class="pieces" id="pieces"></div>
+                </div>
+            </div>
+            <div class="controls">
+                <a href="#" class="btn" id="btnCheck">✅ Comprobar</a>
+                <a href="#" class="btn secondary" id="btnNext">➡️ Siguiente etiqueta</a>
+                <a href="#" class="btn secondary" id="btnRandom">🎲 Práctica aleatoria</a>
+                <span class="muted" id="feedback" style="margin-left:6px"></span>
+            </div>
+        </main>
+
+        <aside class="panel ency" aria-labelledby="ency-title">
+            <h2 id="ency-title">Enciclopedia de etiquetas</h2>
+            <div class="list" id="tagList" role="list"></div>
+        </aside>
+    </div>
+</div>
+
+<div class="sparkle" aria-hidden="true" id="sparkles"></div>
+<div class="confetti" aria-hidden="true" id="confetti"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+    /* Utilidades */
+    function $(sel){ return document.querySelector(sel); }
+    function $$(sel){ return Array.from(document.querySelectorAll(sel)); }
+    function escapeHTML(s){ return s.replace(/[&<>]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m]; }); }
+
+    /* Resaltado seguro (sin plantillas ni $1/$2 en cadenas) */
+    function highlight(src){
+        function coloredAttrs(v){
+            return v.replace(/([a-zA-Z:-]+)="(.*?)"/g, function(_, a, b){
+                return '<span style="color:#9fefff">'+a+'</span>="<span style="color:#ffd591">'+b+'</span>';
+            });
+        }
+        var s = escapeHTML(src);
+        s = s.replace(/(&lt;\/?)([a-zA-Z0-9:-]+)([^&]*?)(\/?&gt;)/g, function(_, a, b, c, d){
+            return a+'<span style="color:#7cc0ff">'+b+'</span><span style="color:#c3b9ff">'+coloredAttrs(c)+'</span>'+d;
+        });
+        s = s.replace(/(&lt;!--)([\s\S]*?)(--&gt;)/g, function(_, a, b, c){
+            return '<span style="color:#6ee7b7">'+a+b+c+'</span>';
+        });
+        return s;
+    }
+
+    function toast(msg){ var t=$('#toast'); t.textContent=msg; t.style.display='block'; clearTimeout(t._timer); t._timer=setTimeout(function(){t.style.display='none';},2200); }
+    (function sparkles(){ var w=$('#sparkles'); w.innerHTML=''; for(var i=0;i<24;i++){ var e=document.createElement('i'); e.style.left=Math.random()*100+'%'; e.style.animationDelay=(Math.random()*5)+'s'; e.style.opacity=.3+Math.random()*.6; w.appendChild(e);} })();
+    function confettiBurst(n){ n=n||26; var box=$('#confetti'); for(var i=0;i<n;i++){ var c=document.createElement('i'); c.style.left=(50+(Math.random()*40-20))+'%'; c.style.top='20%'; c.style.setProperty('--dx',(Math.random()*200-100)+'px'); c.style.transform='translate('+(Math.random()*60-30)+'px,0) rotate('+(Math.random()*180)+'deg)'; box.appendChild(c); setTimeout(function(){c.remove();},700);} }
+
+    /* Datos del juego */
+    var tags=[];
+    function add(name,cat,def,example,q,opts,okIndex,exp,isVoid){
+        tags.push({name:name,category:cat,definition:def,example:example,question:{prompt:q,options:opts,correctIndex:okIndex,explanation:exp},mastered:false,void:!!isVoid});
+    }
+
+    /* Etiquetas (30+ actuales) */
+    // Estructura / Metadatos
+    add('html','Estructura','Elemento raíz que envuelve todo el documento.',`<!doctype html>
+<html lang="es">
+  <head>...</head>
+  <body>...</body>
+</html>`,`¿Qué representa <html>?`,['El elemento raíz del documento','Una lista','Un enlace'],0,'Es el contenedor total.');
+    add('head','Estructura','Contiene metadatos y recursos no visibles directamente.',`<head>
+  <meta charset="utf-8">
+  <title>Título</title>
+</head>`,`¿Para qué sirve <head>?`,['Para metadatos y recursos','Para el contenido principal','Para tablas'],0,'Configura el documento.');
+    add('body','Estructura','Aloja el contenido visible de la página.',`<body>
+  <h1>Hola</h1>
+</body>`,`¿Qué aloja <body>?`,['El contenido visible','Solo scripts','Solo estilos'],0,'Todo lo que ves en la página.');
+    add('meta','Metadatos','Declara metadatos (charset, viewport, SEO, etc.).',`<meta charset="utf-8">`,`¿Para qué se usa <meta>?`,['Para metadatos','Para una lista','Para una cita'],0,'No muestra contenido.',true);
+    add('title','Metadatos','Título del documento (pestaña del navegador).',`<title>Mi sitio</title>`,`¿Dónde aparece <title>?`,['En la pestaña/ventana','En el cuerpo','En el pie'],0,'No se renderiza en el cuerpo.');
+    add('base','Metadatos','Define URL base para rutas relativas.',`<base href="https://ejemplo.com/">`,`¿Qué hace <base>?`,['Fija la URL base','Crea una tabla','Inserta una imagen'],0,'Afecta a los enlaces relativos.',true);
+    add('link','Metadatos','Vincula recursos externos (CSS, iconos).',`<link rel="stylesheet" href="styles.css">`,`¿Qué hace <link>?`,['Vincula recursos externos','Resalta texto','Define una sección'],0,'Común para hojas de estilo.',true);
+    add('style','Metadatos','Inserta CSS incrustado.',`<style>
+  body{font-family:system-ui;}
+</style>`,`¿Qué contiene <style>?`,['Reglas CSS','Datos tabulares','Citas'],0,'Mejor usar archivos externos cuando crece.');
+
+    // Seccionado
+    add('main','Seccionado','Contenido principal único del documento.',`<main>...contenido principal...</main>`,`¿Qué representa <main>?`,['El bloque principal','La barra lateral','El pie'],0,'Debe existir a lo sumo una vez.');
+    add('header','Seccionado','Encabezado de página o sección.',`<header><h1>Mi sitio</h1></header>`,`¿Para qué sirve <header>?`,['Encabezado de sección/página','Pie de página','Tabla de contenidos'],0,'Puede repetirse por sección.');
+    add('nav','Seccionado','Agrupa enlaces de navegación.',`<nav><a href="#_">Inicio</a> | <a href="#_">Acerca</a></nav>`,`¿Qué contiene <nav>?`,['Enlaces de navegación','Solo imágenes','Solo tablas'],0,'Ayuda a la accesibilidad.');
+    add('section','Seccionado','Agrupa contenido con un encabezado.',`<section><h2>Tema</h2><p>Detalle.</p></section>`,`¿Cuándo usar <section>?`,['Para agrupar con encabezado','Para citas extensas','Para datos tabulares'],0,'Debe tener encabezado propio.');
+    add('article','Seccionado','Unidad independiente (post, noticia).',`<article><h2>Noticia</h2><p>Texto...</p></article>`,`¿Qué es <article>?`,['Contenido independiente','Contenedor sin semántica','Pie de página'],0,'Reutilizable y referenciable.');
+    add('aside','Seccionado','Contenido complementario (barra lateral).',`<aside>Glosario, anuncios...</aside>`,`¿Qué tipo de contenido va en <aside>?`,['Complementario','Título principal','Contenido crítico'],0,'Relacionado indirectamente.');
+    add('footer','Seccionado','Pie de página o de sección.',`<footer>© 2025</footer>`,`¿Qué representa <footer>?`,['El pie de una sección/página','Navegación global','Cita corta'],0,'Usable por sección.');
+    add('address','Seccionado','Información de contacto del autor/organización.',`<address>autor@dominio.tld</address>`,`¿Qué describe <address>?`,['Contacto del autor','Cualquier dirección postal','Datos tabulares'],0,'Asociado al autor/propietario.');
+    add('h1','Encabezados','Título de nivel 1.',`<h1>Título 1</h1>`,`¿Qué indica <h1>?`,['Título de nivel 1','Un enlace','Una línea'],0,'Úsalo para el título principal.');
+    add('h2','Encabezados','Título de nivel 2.',`<h2>Título 2</h2>`,`¿Qué indica <h2>?`,['Título de nivel 2','Lista','Tabla'],0,'Subsecciones.');
+    add('h3','Encabezados','Título de nivel 3.',`<h3>Título 3</h3>`,`¿Qué indica <h3>?`,['Título de nivel 3','Enlace','Cita'],0,'Mantén jerarquía.');
+    add('h4','Encabezados','Título de nivel 4.',`<h4>Título 4</h4>`,`¿Qué indica <h4>?`,['Título de nivel 4','Imagen','Código'],0,'Jerarquía interna.');
+    add('h5','Encabezados','Título de nivel 5.',`<h5>Título 5</h5>`,`¿Qué indica <h5>?`,['Título de nivel 5','Tabla','Lista'],0,'Granularidad fina.');
+    add('h6','Encabezados','Título de nivel 6.',`<h6>Título 6</h6>`,`¿Qué indica <h6>?`,['Título de nivel 6','Formulario','Audio'],0,'El menor nivel.');
+
+    // Agrupación de contenido
+    add('p','Agrupación','Párrafo de texto.',`<p>Un párrafo claro y conciso.</p>`,`¿Qué define <p>?`,['Un párrafo','Una lista','Una cita corta'],0,'No anides bloques dentro de <p>.');
+    add('hr','Agrupación','Separador temático; línea horizontal.',`<hr>`,`¿Qué hace <hr>?`,['Separa temas','Crea un encabezado','Vincula CSS'],0,'Elemento vacío.',true);
+    add('pre','Agrupación','Texto preformateado (respeta espacios).',`<pre>  mantiene
+  el espaciado</pre>`,`¿Qué conserva <pre>?`,['Espacios y saltos','Solo enlaces','Solo estilos'],0,'Útil para código.');
+    add('blockquote','Agrupación','Cita en bloque de otra fuente.',`<blockquote>Una cita larga.</blockquote>`,`¿Para qué es <blockquote>?`,['Citas extensas','Resaltar palabras','Navegación'],0,'Usa <cite> para la fuente.');
+    add('ol','Agrupación','Lista ordenada numerada.',`<ol><li>Uno</li><li>Dos</li></ol>`,`<ol> crea…`,['Listas numeradas','Citas','Tablas'],0,'Con <li>.');
+    add('ul','Agrupación','Lista desordenada con viñetas.',`<ul><li>Elemento</li></ul>`,`<ul> crea…`,['Listas con viñetas','Tablas','Encabezados'],0,'Con <li>.');
+    add('li','Agrupación','Elemento de una lista.',`<ul><li>Ítem</li></ul>`,`¿Dónde va <li>?`,['Dentro de listas','En <head>','En <table>'],0,'Ítem de lista.');
+    add('dl','Agrupación','Lista de definiciones.',`<dl><dt>Término</dt><dd>Definición</dd></dl>`,`<dl> se usa para…`,['Definiciones','Tablas','Formularios'],0,'Con <dt> y <dd>.');
+    add('dt','Agrupación','Término en una lista de definiciones.',`<dt>API</dt>`,`¿Qué es <dt>?`,['El término','La descripción','Un enlace'],0,'Va dentro de <dl>.');
+    add('dd','Agrupación','Descripción de un término.',`<dd>Interfaz de programación</dd>`,`¿Qué es <dd>?`,['La descripción','El término','Una tabla'],0,'Junto a <dt>.');
+    add('figure','Agrupación','Unidad de contenido referenciable.',`<figure><figcaption>Gráfico 1</figcaption></figure>`,`¿Qué agrupa <figure>?`,['Contenido autónomo con título','Solo listas','Scripts'],0,'Con <figcaption>.');
+    add('figcaption','Agrupación','Leyenda de una figura.',`<figure><figcaption>Mapa del sitio</figcaption></figure>`,`¿Qué es <figcaption>?`,['Leyenda de figura','Pie de página','Enlace'],0,'Describe la figura.');
+    add('div','Agrupación','Contenedor genérico sin semántica.',`<div class="tarjeta">Contenido</div>`,`¿Qué aporta <div>?`,['Contenedor genérico','Título semántico','Cita'],0,'Cuando no haya etiqueta más específica.');
+
+    // Texto en línea y semántica
+    add('a','Texto en línea','Hipervínculo.',`<a href="#_">Ir</a>`,`¿Qué crea <a>?`,['Un enlace','Un encabezado','Una tabla'],0,'Usa href, target, rel.');
+    add('em','Texto en línea','Énfasis semántico.',`<p>Esto es <em>importante</em>.</p>`,`<em> indica…`,['Énfasis semántico','Subrayado','Código'],0,'Lectores de pantalla lo remarcan.');
+    add('strong','Texto en línea','Mayor énfasis.',`<strong>¡Atención!</strong>`,`<strong> indica…`,['Énfasis fuerte','Tachado','Cita'],0,'Más importante que <em>.');
+    add('small','Texto en línea','Notas secundarias.',`<small>Términos y condiciones</small>`,`<small> se usa para…`,['Notas secundarias','Código','Encabezados'],0,'Para anotaciones.');
+    add('s','Texto en línea','Contenido no vigente (tachado).',`<s>Precio antiguo</s>`,`¿Qué denota <s>?`,['No vigente/incorrecto','Cita corta','Lista'],0,'No confundir con <del>.');
+    add('cite','Texto en línea','Referencia a título de obra.',`<cite>El Quijote</cite>`,`¿Qué referencia <cite>?`,['Título de obra','URL','Código'],0,'Útil con citas.');
+    add('q','Texto en línea','Cita breve en línea.',`<q>No te rindas</q>`,`<q> representa…`,['Cita breve','Código','Tabla'],0,'El navegador agrega comillas.');
+    add('dfn','Texto en línea','Marca la definición de un término.',`<p><dfn>API</dfn>: conjunto…</p>`,`¿Qué marca <dfn>?`,['Definición de término','Un enlace','Un error'],0,'Primera aparición.');
+    add('abbr','Texto en línea','Abreviatura con expansión.',`<abbr title="Cascading Style Sheets">CSS</abbr>`,`¿Cómo se usa <abbr>?`,['Abreviaturas con title','Tablas','Navegación'],0,'Proporciona "title".');
+    add('data','Texto en línea','Valor legible por máquina.',`<data value="1200">1,2k</data>`,`¿Qué aporta <data>?`,['Valor legible por máquina','Cita','Lista'],0,'Microdatos.');
+    add('time','Texto en línea','Fecha/hora con datetime.',`<time datetime="2025-08-27">27 de agosto de 2025</time>`,`<time> sirve para…`,['Marcar fechas/horas','Enlaces','Tablas'],0,'Mejora semántica.');
+    add('code','Texto en línea','Fragmento de código.',`<code>console.log("Hola")</code>`,`¿Qué marca <code>?`,['Código','Énfasis','Cita'],0,'Para bloques usa <pre>.');
+    add('var','Texto en línea','Variable (matemática/código).',`<p>Sea <var>n</var> un entero.</p>`,`¿Qué representa <var>?`,['Una variable','Una URL','Una cita'],0,'Semántica técnica.');
+    add('samp','Texto en línea','Salida de programa.',`<samp>Error 404</samp>`,`<samp> representa…`,['Salida de programa','Entrada de usuario','Lista'],0,'Útil con <kbd>.');
+    add('kbd','Texto en línea','Entrada del usuario/teclado.',`<kbd>Ctrl</kbd> + <kbd>C</kbd>`,`<kbd> es para…`,['Entrada de usuario','Variables','Citas'],0,'Atajos.');
+    add('sub','Texto en línea','Subíndice.',`H<sub>2</sub>O`,`<sub> produce…`,['Subíndice','Superíndice','Tachado'],0,'Fórmulas.');
+    add('sup','Texto en línea','Superíndice.',`x<sup>2</sup>`,`<sup> produce…`,['Superíndice','Subíndice','Lista'],0,'Potencias.');
+    add('i','Texto en línea','Voz/tono alterno.',`<i>palabra extranjera</i>`,`<i> indica…`,['Voz/tono alterno','Énfasis fuerte','Código'],0,'No confundir con <em>.');
+    add('b','Texto en línea','Llamar atención sin importancia semántica.',`<b>Nuevo</b>`,`<b> se usa para…`,['Llamar atención','Énfasis semántico','Citas'],0,'No reemplaza <strong>.');
+    add('u','Texto en línea','Anotación no textual (convención).',`<u>error ortográfico</u>`,`<u> sugiere…`,['Anotación no textual','Cita','Lista'],0,'Evita confusión con enlaces.');
+    add('mark','Texto en línea','Resaltado por relevancia.',`<mark>palabra clave</mark>`,`<mark> sirve para…`,['Resaltar por relevancia','Título','Tabla'],0,'Como marcador.');
+    add('bdi','Texto en línea','Aísla direccionalidad.',`<bdi>عربى</bdi>`,`¿Qué hace <bdi>?`,['Aísla dirección','Crea tablas','Define listas'],0,'Útil con RTL.');
+    add('bdo','Texto en línea','Fuerza la direccionalidad (dir=ltr/rtl).',`<bdo dir="rtl">texto</bdo>`,`<bdo> permite…`,['Forzar dirección del texto','Énfasis','Código'],0,'Usar con cuidado.');
+    add('span','Texto en línea','Contenedor en línea genérico.',`<span class="nota">Nota</span>`,`¿Qué es <span>?`,['Contenedor genérico','Encabezado','Cita'],0,'Sin semántica específica.');
+    add('br','Texto en línea','Salto de línea.',`Línea 1<br>Línea 2`,`<br> inserta…`,['Un salto de línea','Un espacio','Una tabla'],0,'Elemento vacío.',true);
+    add('wbr','Texto en línea','Sugerencia de corte de palabra.',`anti<wbr>constitucional`,`¿Qué sugiere <wbr>?`,['Posible salto dentro de palabra','Énfasis','Cita'],0,'Mejora maquetación.',true);
+
+    // Ediciones
+    add('ins','Edición','Contenido insertado (añadido).',`<ins>Nuevo párrafo</ins>`,`<ins> indica…`,['Inserción de contenido','Tachado','Código'],0,'Puede llevar cite/datetime.');
+    add('del','Edición','Contenido eliminado (histórico).',`<del>Texto removido</del>`,`<del> indica…`,['Eliminación histórica','Resaltado','Lista'],0,'Diferente a <s>.');
+
+    // Tablas
+    add('table','Tablas','Tabla de datos.',`<table>
+  <tr><th>Nombre</th><th>Puntos</th></tr>
+  <tr><td>Ada</td><td>99</td></tr>
+</table>`,`<table> crea…`,['Una tabla de datos','Una lista','Un encabezado'],0,'Usa secciones semánticas.');
+    add('caption','Tablas','Título/leyenda de tabla.',`<table>
+  <caption>Puntuaciones</caption>
+  ...
+</table>`,`¿Qué es <caption>?`,['Título de la tabla','Celda','Lista'],0,'Primer hijo de <table>.');
+    add('colgroup','Tablas','Grupo de columnas para estilos.',`<colgroup>
+  <col span="2">
+</colgroup>`,`<colgroup> sirve para…`,['Agrupar columnas','Filas de encabezado','Pies de tabla'],0,'Con <col>.');
+    add('col','Tablas','Propiedades de columnas.',`<col span="1">`,`<col> define…`,['Propiedades de columnas','Celdas','Filas'],0,'Hijo de <colgroup>/<table>.',true);
+    add('thead','Tablas','Encabezado de tabla.',`<thead><tr><th>Col</th></tr></thead>`,`<thead> contiene…`,['Encabezados de columna','Datos','Pie'],0,'Accesibilidad.');
+    add('tbody','Tablas','Cuerpo de datos.',`<tbody><tr><td>Dato</td></tr></tbody>`,`<tbody> es…`,['Cuerpo de datos','Encabezado','Leyenda'],0,'Puede haber varios.');
+    add('tfoot','Tablas','Pie de tabla (totales).',`<tfoot><tr><td>Total</td></tr></tfoot>`,`<tfoot> suele contener…`,['Totales/resúmenes','Encabezados','Scripts'],0,'Al final lógico.');
+    add('tr','Tablas','Fila de una tabla.',`<tr><td>A</td><td>B</td></tr>`,`<tr> representa…`,['Una fila','Una columna','Encabezado'],0,'Contiene celdas.');
+    add('th','Tablas','Celda de encabezado.',`<th scope="col">Nombre</th>`,`<th> es…`,['Celda de encabezado','Cita','Lista'],0,'Usa scope.');
+    add('td','Tablas','Celda de datos.',`<td>42</td>`,`<td> es…`,['Celda de datos','Encabezado','Leyenda'],0,'Contenido tabular.');
+
+    // Interactivos / Plantillas
+    add('details','Interactivo','Mostrar/ocultar contenido a demanda.',`<details><summary>Más info</summary><p>Contenido.</p></details>`,`<details> permite…`,['Mostrar/ocultar contenido','Crear formularios','Reproducir video'],0,'Usa <summary>.');
+    add('summary','Interactivo','Cabecera visible de <details>.',`<details><summary>Ver detalles</summary>...</details>`,`<summary> es…`,['Encabezado clicable de details','Pie de tabla','Enlace externo'],0,'Primer hijo de <details>.');
+    add('dialog','Interactivo','Cuadro de diálogo modal/no modal.',`<dialog open>Hola</dialog>`,`¿Qué crea <dialog>?`,['Cuadros de diálogo','Tablas','Citas'],0,'Controlable con JS.');
+    add('script','Scripting','Inserta o referencia scripts.',`<script>console.log("hola")<\/script>`,`<script> sirve para…`,['Ejecutar JS','Aplicar estilos','Definir tablas'],0,'Usa defer para no bloquear.');
+    add('noscript','Scripting','Contenido alternativo si JS está deshabilitado.',`<noscript>Activa JavaScript para ver este sitio.</noscript>`,`¿Cuándo aparece <noscript>?`,['Cuando JS no está disponible','Siempre','En impresiones'],0,'Contenido de reserva.');
+    add('template','Scripting','Marcado inerte para clonar con JS.',`<template id="card">
+  <article class="card">...</article>
+</template>`,`<template> contiene…`,['Marcado inerte para clonar','CSS global','Datos de tabla'],0,'No se renderiza hasta usar JS.');
+    add('slot','Web Components','Punto de inserción de contenido en un componente.',`<slot name="titulo"></slot>`,`¿Qué es <slot>?`,['Ranura de contenido','Lista','Tabla'],0,'Uso en custom elements.');
+
+    /* Estado y elementos */
+    var index=0, selectedOption=null, xp=0;
+    var els={category:$('#category'), tagname:$('#tagname'), definition:$('#definition'), example:$('#example'), question:$('#question'), options:$('#options'), progress:$('#progress'), xp:$('#xp'), mastered:$('#mastered'), list:$('#tagList'), feedback:$('#feedback'), badges:$('#badges'), builder:$('#builder'), slots:$('#slots'), pieces:$('#pieces'), builderHint:$('#builderHint')};
+
+    function renderTag(i){
+        var t=tags[i]; index=i; selectedOption=null; els.feedback.textContent='';
+        els.category.textContent=t.category;
+        els.tagname.textContent='<'+t.name+'>';
+        els.definition.textContent=t.definition;
+        els.example.innerHTML=highlight(t.example);
+        els.question.textContent='Reto 1: '+t.question.prompt;
+        renderOptions(t);
+        setupBuilder(t);
+        updateList();
+    }
+
+    function renderOptions(t){
+        els.options.innerHTML='';
+        t.question.options.forEach(function(opt,idx){
+            var a=document.createElement('a'); a.href='#'; a.className='option'; a.textContent=opt; a.setAttribute('role','button');
+            a.addEventListener('click',function(e){e.preventDefault(); $$('.option').forEach(function(o){o.classList.remove('selected')}); a.classList.add('selected'); selectedOption=idx;});
+            els.options.appendChild(a);
+        });
+    }
+
+    function setupBuilder(t){
+        els.slots.innerHTML=''; els.pieces.innerHTML='';
+        if(t.void){
+            els.builderHint.textContent='Arrastra la pieza correcta para una etiqueta vacía.';
+            var slot=document.createElement('div'); slot.className='dropzone'; slot.dataset.accept='single'; els.slots.appendChild(slot);
+            var good=piece('<'+t.name+'>','single',t.name);
+            var distract1=piece('<hr>','single','hr');
+            var distract2=piece('<br>','single','br');
+            [good,distract1,distract2].sort(function(){return Math.random()-.5}).forEach(function(p){els.pieces.appendChild(p)});
+        }else{
+            els.builderHint.textContent='Coloca 6 piezas en orden: apertura → texto → <mark> → texto marcado → </mark> → cierre';
+            ['open','text','inlineOpen','inlineText','inlineClose','close'].forEach(function(type){
+                var s=document.createElement('div'); s.className='dropzone'; s.dataset.accept=type; els.slots.appendChild(s);
+            });
+            var goodOpen=piece('<'+t.name+'>','open',t.name);
+            var text1=piece('Texto','text','text');
+            var inlineOpen=piece('<mark>','inlineOpen','mark');
+            var inlineText=piece('clave','inlineText','inlineText');
+            var inlineClose=piece('</mark>','inlineClose','mark');
+            var goodClose=piece('</'+t.name+'>','close',t.name);
+            var d1=piece('<div>','open','div');
+            var d2=piece('<em>','inlineOpen','em');
+            var d3=piece('</em>','inlineClose','em');
+            [goodOpen,text1,inlineOpen,inlineText,inlineClose,goodClose,d1,d2,d3].sort(function(){return Math.random()-.5}).forEach(function(p){els.pieces.appendChild(p)});
+        }
+    }
+
+    function piece(label,type,value){
+        var el=document.createElement('div'); el.className='piece'; el.draggable=true; el.textContent=label; el.dataset.type=type; el.dataset.value=value;
+        el.addEventListener('dragstart',function(e){ e.dataTransfer.setData('text/plain', JSON.stringify({type:type,value:value,label:label})); });
+        return el;
+    }
+
+    els.slots.addEventListener('dragover',function(e){ e.preventDefault(); });
+    els.slots.addEventListener('drop',function(e){
+        e.preventDefault();
+        var data=JSON.parse(e.dataTransfer.getData('text/plain')||'{}');
+        var target=e.target.closest('.dropzone'); if(!target) return;
+        var accept=target.dataset.accept; var t=tags[index]; var ok=false;
+        if(t.void && accept==='single'){
+            ok=(data.type==='single' && data.value===t.name);
+        }else{
+            if(accept==='open') ok=(data.type==='open' && data.value===t.name);
+            if(accept==='text') ok=(data.type==='text');
+            if(accept==='inlineOpen') ok=(data.type==='inlineOpen' && data.value==='mark');
+            if(accept==='inlineText') ok=(data.type==='inlineText');
+            if(accept==='inlineClose') ok=(data.type==='inlineClose' && data.value==='mark');
+            if(accept==='close') ok=(data.type==='close' && data.value===t.name);
+        }
+        if(ok){ target.textContent=data.label; target.classList.add('filled'); toast('Pieza colocada ✅'); }
+        else{ toast('Esa pieza no va aquí'); }
+    });
+
+    function isBuilderCorrect(){
+        var t=tags[index]; var zones=$$('.dropzone');
+        if(t.void){
+            return zones.length===1 && zones[0].classList.contains('filled') && zones[0].textContent.trim()==='<'+t.name+'>';
+        }else{
+            if(zones.length!==6) return false;
+            var labels=zones.map(function(z){return z.textContent.trim()});
+            return labels[0]==='<'+t.name+'>' && labels[1]==='Texto' && labels[2]==='<mark>' && labels[3]==='clave' && labels[4]==='</mark>' && labels[5]==='</'+t.name+'>';
+        }
+    }
+
+    function updateProgress(){
+        var mastered=tags.filter(function(t){return t.mastered}).length;
+        els.mastered.textContent=mastered;
+        var pct=Math.round((mastered/tags.length)*100);
+        els.progress.style.width=pct+'%';
+        els.xp.textContent=xp;
+        if(mastered===5) addBadge('Explorador','🧭');
+        if(mastered===10) addBadge('Estudioso','📚');
+        if(mastered===20) addBadge('Maestro de etiquetas','🏆');
+    }
+
+    function addBadge(text,icon){
+        if([].slice.call(els.badges.children).some(function(b){return b.dataset.text===text})) return;
+        var b=document.createElement('div'); b.className='badge'; b.dataset.text=text; b.textContent=icon+' '+text; els.badges.appendChild(b);
+        confettiBurst(36); toast('¡Nueva insignia: '+text+'!');
+    }
+
+    function updateList(){
+        els.list.innerHTML='';
+        tags.forEach(function(t,i){
+            var div=document.createElement('div'); div.className='tagpill'+(t.mastered?'':' locked'); div.setAttribute('role','listitem');
+            var left=document.createElement('span'); left.textContent='<'+t.name+'>';
+            var right=document.createElement('span'); right.className='muted'; right.textContent=t.category;
+            div.append(left,right);
+            div.addEventListener('click',function(){ renderTag(i); window.scrollTo({top:0,behavior:'smooth'});});
+            els.list.appendChild(div);
+        });
+    }
+
+    function check(){
+        if(selectedOption===null){ toast('Elige una opción en el Reto 1'); return; }
+        var t=tags[index];
+        var ok1=(selectedOption===t.question.correctIndex);
+        var ok2=isBuilderCorrect();
+        if(ok1 && ok2){
+            if(!t.mastered){ t.mastered=true; xp+=20; updateProgress(); }
+            els.feedback.textContent='✅ ¡Perfecto! '+t.question.explanation+' y el constructor es correcto.';
+            confettiBurst();
+        }else{
+            var msg='❌ '; if(!ok1) msg+='Revisa la opción del Reto 1. '; if(!ok2) msg+='Completa el constructor.';
+            els.feedback.textContent=msg; xp=Math.max(0,xp-2); updateProgress();
+        }
+    }
+
+    $('#btnCheck').addEventListener('click',function(e){e.preventDefault(); check();});
+    $('#btnNext').addEventListener('click',function(e){e.preventDefault(); renderTag((index+1)%tags.length);});
+    $('#btnRandom').addEventListener('click',function(e){e.preventDefault(); renderTag(Math.floor(Math.random()*tags.length));});
+
+    /* Init */
+    (function init(){ updateList(); renderTag(0); updateProgress(); })();
+</script>
+</body>
+</html>
