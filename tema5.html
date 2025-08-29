@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HTML5 Tag Quest — Aprende Jugando</title>
+    <title>HTML5 Tag Quest — Retos simples (página final)</title>
     <style>
         :root{--bg:#0e0f1a;--panel:#15172b;--panel-2:#101226;--text:#e9ecff;--muted:#a5b0ff;--accent:#7c5cff;--accent-2:#31d0aa;--warn:#ffb057;--danger:#ff6b7a;--ok:#2ad18b;--shadow:0 20px 40px rgba(0,0,0,.35);}
         *{box-sizing:border-box}
@@ -17,7 +17,7 @@
         .brand h1{font-size:18px;margin:0;letter-spacing:.5px}
         .brand small{display:block;color:var(--muted)}
 
-        .grid{display:grid;grid-template-columns:300px 1fr 340px;gap:16px;padding:18px;}
+        .grid{display:grid;grid-template-columns:300px 1fr 420px;gap:16px;padding:18px;}
         .panel{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid #242853;border-radius:18px;padding:14px;box-shadow:var(--shadow)}
         .panel h2{margin:.2rem 0 8px;font-size:16px;color:#cfd6ff}
 
@@ -46,20 +46,20 @@
         .option:hover{transform:translateY(-1px);border-color:#4a53c7}
         .option.selected{outline:2px solid #6d79ff}
 
-        /* Drag & Drop Builder - 6 piezas */
+        /* Builder de página completa */
         .builder{display:grid;gap:10px}
-        .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-        .dropzone{min-height:48px;border:2px dashed #394092;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#0b1030;padding:8px;text-align:center}
-        .dropzone.filled{border-style:solid;background:#0f153b}
-        .pieces{display:flex;flex-wrap:wrap;gap:8px}
-        .piece{user-select:none;cursor:grab;border:1px solid #3a45a3;background:linear-gradient(180deg,#1b2370,#16205b);border-radius:10px;padding:8px 10px}
-        .piece:active{cursor:grabbing}
         .hint{font-size:12px;color:var(--muted)}
-
+        .editor{display:grid;gap:8px}
+        .editor label{font-size:12px;color:var(--muted)}
+        textarea#pageInput{width:100%;min-height:200px;background:#0b1030;border:1px solid #2a2f69;border-radius:10px;color:var(--text);padding:10px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;font-size:13px}
         .controls{display:flex;gap:8px;flex-wrap:wrap}
         .btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(180deg,#1f2a78,#1a235f);border:1px solid #3f49aa;padding:10px 14px;border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,.25);font-weight:600}
         .btn.secondary{background:linear-gradient(180deg,#172058,#141b45);border-color:#303a8e}
         .muted{color:#b9c3ff}
+
+        .pagePreview{display:grid;gap:6px}
+        .pagePreview .muted{font-size:12px}
+        iframe#pageFrame{width:100%;height:280px;border:1px solid #2a2f69;border-radius:10px;background:#0b1030}
 
         .ency{position:sticky;top:84px;max-height:calc(100vh - 120px);overflow:auto}
         .list{display:grid;gap:8px}
@@ -79,7 +79,6 @@
         @media (max-width: 1100px){
             .grid{grid-template-columns:1fr;}
             .ency,.score{position:relative;top:auto;max-height:none}
-            .slots{grid-template-columns:1fr}
         }
     </style>
 </head>
@@ -89,8 +88,8 @@
         <div class="brand">
             <div class="logo" aria-hidden="true"></div>
             <div>
-                <h1>HTML5 Tag Quest <small>— Aprende jugando con opciones y arrastrar & soltar 🎮✨</small></h1>
-                <small class="muted">1) Lee definición y ejemplo • 2) Contesta el Reto 1 • 3) Construye 6 piezas en el Reto 2 • 4) Comprobar.</small>
+                <h1>HTML5 Tag Quest <small>— Retos simples que construyen una web 🎮✨</small></h1>
+                <small class="muted">1) Lee definición y ejemplo • 2) Reto 1 (opción múltiple) • 3) Reto 2: añade la etiqueta a TU página • 4) Comprobar.</small>
             </div>
         </div>
     </header>
@@ -113,7 +112,7 @@
             </div>
             <div class="definition" id="definition">Descripción de la etiqueta seleccionada.</div>
             <div class="howto">
-                <strong>Reto 2 (6 piezas):</strong> apertura → texto → <code>&lt;mark&gt;</code> → texto marcado → <code>&lt;/mark&gt;</code> → cierre.
+                <strong>Reto 2 (problema simple):</strong> en el <em>Editor de página</em> añade correctamente la etiqueta actual a tu documento. Cada reto suma y el resultado final será <u>una sola página web</u>. Si la etiqueta va en <code>&lt;head&gt;</code>, colócala allí; si es de contenido, ubícala en <code>&lt;body&gt;</code> (mejor dentro de <code>&lt;main id="app"&gt;</code>).
             </div>
             <div class="example">
                 <div class="muted" style="margin-bottom:6px">Ejemplo</div>
@@ -122,11 +121,21 @@
             <div class="challenge">
                 <div class="q" id="question">Reto 1: …</div>
                 <div class="options" id="options"></div>
-                <div class="q" style="margin-top:8px">Reto 2: construye el fragmento correcto</div>
+                <div class="q" style="margin-top:8px">Reto 2: construye tu página — añade la etiqueta</div>
                 <div class="builder" id="builder">
-                    <div class="hint" id="builderHint">Coloca todas las piezas en los espacios (6 en total).</div>
-                    <div class="slots" id="slots"></div>
-                    <div class="pieces" id="pieces"></div>
+                    <div class="hint" id="builderHint">Usa el botón para insertar una plantilla, o escribe directamente.</div>
+                    <div class="editor">
+                        <label for="pageInput">Editor de página (HTML completo)</label>
+                        <textarea id="pageInput" spellcheck="false" placeholder="Aquí verás el HTML de tu página en construcción"></textarea>
+                        <div class="controls">
+                            <a href="#" class="btn" id="btnInsert">➕ Insertar etiqueta actual</a>
+                            <a href="#" class="btn secondary" id="btnReset">🗑️ Restablecer página</a>
+                        </div>
+                    </div>
+                    <div class="pagePreview">
+                        <div class="muted">Vista previa (iframe sin scripts)</div>
+                        <iframe id="pageFrame" sandbox="allow-forms allow-pointer-lock allow-popups allow-modals"></iframe>
+                    </div>
                 </div>
             </div>
             <div class="controls">
@@ -152,22 +161,24 @@
     /* Utilidades */
     function $(sel){ return document.querySelector(sel); }
     function $$(sel){ return Array.from(document.querySelectorAll(sel)); }
-    function escapeHTML(s){ return s.replace(/[&<>]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m]; }); }
+    function escapeHTML(s){ return s.replace(new RegExp('[&<>]','g'), function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m]; }); }
 
-    /* Resaltado seguro (sin plantillas ni $1/$2 en cadenas) */
+    /* Resaltado seguro (migrado a RegExp() para evitar conflictos) */
     function highlight(src){
         function coloredAttrs(v){
-            return v.replace(/([a-zA-Z:-]+)="(.*?)"/g, function(_, a, b){
+            return v.replace(new RegExp('([a-zA-Z:-]+)="(.*?)"','g'), function(_, a, b){
                 return '<span style="color:#9fefff">'+a+'</span>="<span style="color:#ffd591">'+b+'</span>';
             });
         }
         var s = escapeHTML(src);
-        s = s.replace(/(&lt;\/?)([a-zA-Z0-9:-]+)([^&]*?)(\/?&gt;)/g, function(_, a, b, c, d){
-            return a+'<span style="color:#7cc0ff">'+b+'</span><span style="color:#c3b9ff">'+coloredAttrs(c)+'</span>'+d;
-        });
-        s = s.replace(/(&lt;!--)([\s\S]*?)(--&gt;)/g, function(_, a, b, c){
-            return '<span style="color:#6ee7b7">'+a+b+c+'</span>';
-        });
+        s = s.replace(new RegExp('(&lt;\\/?)'+'([a-zA-Z0-9:-]+)'+'([^&]*?)'+'(\\/?&gt;)', 'g'),
+            function(_, a, b, c, d){
+                return a+'<span style="color:#7cc0ff">'+b+'</span><span style="color:#c3b9ff">'+coloredAttrs(c)+'</span>'+d;
+            }
+        );
+        s = s.replace(new RegExp('(&lt;!--)'+'([\\s\\S]*?)'+'(--&gt;)', 'g'),
+            function(_, a, b, c){ return '<span style="color:#6ee7b7">'+a+b+c+'</span>'; }
+        );
         return s;
     }
 
@@ -175,13 +186,34 @@
     (function sparkles(){ var w=$('#sparkles'); w.innerHTML=''; for(var i=0;i<24;i++){ var e=document.createElement('i'); e.style.left=Math.random()*100+'%'; e.style.animationDelay=(Math.random()*5)+'s'; e.style.opacity=.3+Math.random()*.6; w.appendChild(e);} })();
     function confettiBurst(n){ n=n||26; var box=$('#confetti'); for(var i=0;i<n;i++){ var c=document.createElement('i'); c.style.left=(50+(Math.random()*40-20))+'%'; c.style.top='20%'; c.style.setProperty('--dx',(Math.random()*200-100)+'px'); c.style.transform='translate('+(Math.random()*60-30)+'px,0) rotate('+(Math.random()*180)+'deg)'; box.appendChild(c); setTimeout(function(){c.remove();},700);} }
 
+    /* Persistencia de la página construida */
+    var PAGE_KEY = 'tagquest.page';
+    function getInitialPage(){ return (
+        `<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi sitio en construcción</title>
+</head>
+<body>
+  <main id="app">
+    <!-- Construye tu página aquí etiqueta por etiqueta -->
+  </main>
+</body>
+</html>`
+    ); }
+    function loadPage(){ return localStorage.getItem(PAGE_KEY) || getInitialPage(); }
+    function savePage(html){ localStorage.setItem(PAGE_KEY, html); }
+
     /* Datos del juego */
     var tags=[];
     function add(name,cat,def,example,q,opts,okIndex,exp,isVoid){
         tags.push({name:name,category:cat,definition:def,example:example,question:{prompt:q,options:opts,correctIndex:okIndex,explanation:exp},mastered:false,void:!!isVoid});
     }
 
-    /* Etiquetas (30+ actuales) */
+    /* === LISTA DE ETIQUETAS (50+ incluyendo multimedia, tablas, formularios, etc.) === */
+
     // Estructura / Metadatos
     add('html','Estructura','Elemento raíz que envuelve todo el documento.',`<!doctype html>
 <html lang="es">
@@ -211,31 +243,33 @@
     add('article','Seccionado','Unidad independiente (post, noticia).',`<article><h2>Noticia</h2><p>Texto...</p></article>`,`¿Qué es <article>?`,['Contenido independiente','Contenedor sin semántica','Pie de página'],0,'Reutilizable y referenciable.');
     add('aside','Seccionado','Contenido complementario (barra lateral).',`<aside>Glosario, anuncios...</aside>`,`¿Qué tipo de contenido va en <aside>?`,['Complementario','Título principal','Contenido crítico'],0,'Relacionado indirectamente.');
     add('footer','Seccionado','Pie de página o de sección.',`<footer>© 2025</footer>`,`¿Qué representa <footer>?`,['El pie de una sección/página','Navegación global','Cita corta'],0,'Usable por sección.');
-    add('address','Seccionado','Información de contacto del autor/organización.',`<address>autor@dominio.tld</address>`,`¿Qué describe <address>?`,['Contacto del autor','Cualquier dirección postal','Datos tabulares'],0,'Asociado al autor/propietario.');
-    add('h1','Encabezados','Título de nivel 1.',`<h1>Título 1</h1>`,`¿Qué indica <h1>?`,['Título de nivel 1','Un enlace','Una línea'],0,'Úsalo para el título principal.');
-    add('h2','Encabezados','Título de nivel 2.',`<h2>Título 2</h2>`,`¿Qué indica <h2>?`,['Título de nivel 2','Lista','Tabla'],0,'Subsecciones.');
-    add('h3','Encabezados','Título de nivel 3.',`<h3>Título 3</h3>`,`¿Qué indica <h3>?`,['Título de nivel 3','Enlace','Cita'],0,'Mantén jerarquía.');
-    add('h4','Encabezados','Título de nivel 4.',`<h4>Título 4</h4>`,`¿Qué indica <h4>?`,['Título de nivel 4','Imagen','Código'],0,'Jerarquía interna.');
-    add('h5','Encabezados','Título de nivel 5.',`<h5>Título 5</h5>`,`¿Qué indica <h5>?`,['Título de nivel 5','Tabla','Lista'],0,'Granularidad fina.');
-    add('h6','Encabezados','Título de nivel 6.',`<h6>Título 6</h6>`,`¿Qué indica <h6>?`,['Título de nivel 6','Formulario','Audio'],0,'El menor nivel.');
 
-    // Agrupación de contenido
+    // Encabezados
+    add('h1','Encabezados','Título de nivel 1.',`<h1>Título 1</h1>`,`¿Qué indica <h1>?`,['Título de nivel 1','Un enlace','Una línea'],0,'Úsalo para el título principal.');
+    add('h2','Encabezados','Título de nivel 2.',`<h2>Subtítulo</h2>`,`¿Qué indica <h2>?`,['Nivel 2','Lista','Tabla'],0,'Jerarquía.');
+    add('h3','Encabezados','Título de nivel 3.',`<h3>Sección</h3>`,`¿Qué indica <h3>?`,['Nivel 3','Enlace','Cita'],0,'Jerarquía.');
+    add('h4','Encabezados','Título de nivel 4.',`<h4>Bloque</h4>`,`¿Qué indica <h4>?`,['Nivel 4','Imagen','Código'],0,'Jerarquía.');
+    add('h5','Encabezados','Título de nivel 5.',`<h5>Detalle</h5>`,`¿Qué indica <h5>?`,['Nivel 5','Tabla','Lista'],0,'Jerarquía.');
+    add('h6','Encabezados','Título de nivel 6.',`<h6>Nota</h6>`,`¿Qué indica <h6>?`,['Nivel 6','Formulario','Audio'],0,'Jerarquía.');
+
+    // Agrupación y listas
     add('p','Agrupación','Párrafo de texto.',`<p>Un párrafo claro y conciso.</p>`,`¿Qué define <p>?`,['Un párrafo','Una lista','Una cita corta'],0,'No anides bloques dentro de <p>.');
-    add('hr','Agrupación','Separador temático; línea horizontal.',`<hr>`,`¿Qué hace <hr>?`,['Separa temas','Crea un encabezado','Vincula CSS'],0,'Elemento vacío.',true);
     add('pre','Agrupación','Texto preformateado (respeta espacios).',`<pre>  mantiene
   el espaciado</pre>`,`¿Qué conserva <pre>?`,['Espacios y saltos','Solo enlaces','Solo estilos'],0,'Útil para código.');
     add('blockquote','Agrupación','Cita en bloque de otra fuente.',`<blockquote>Una cita larga.</blockquote>`,`¿Para qué es <blockquote>?`,['Citas extensas','Resaltar palabras','Navegación'],0,'Usa <cite> para la fuente.');
-    add('ol','Agrupación','Lista ordenada numerada.',`<ol><li>Uno</li><li>Dos</li></ol>`,`<ol> crea…`,['Listas numeradas','Citas','Tablas'],0,'Con <li>.');
-    add('ul','Agrupación','Lista desordenada con viñetas.',`<ul><li>Elemento</li></ul>`,`<ul> crea…`,['Listas con viñetas','Tablas','Encabezados'],0,'Con <li>.');
-    add('li','Agrupación','Elemento de una lista.',`<ul><li>Ítem</li></ul>`,`¿Dónde va <li>?`,['Dentro de listas','En <head>','En <table>'],0,'Ítem de lista.');
-    add('dl','Agrupación','Lista de definiciones.',`<dl><dt>Término</dt><dd>Definición</dd></dl>`,`<dl> se usa para…`,['Definiciones','Tablas','Formularios'],0,'Con <dt> y <dd>.');
-    add('dt','Agrupación','Término en una lista de definiciones.',`<dt>API</dt>`,`¿Qué es <dt>?`,['El término','La descripción','Un enlace'],0,'Va dentro de <dl>.');
-    add('dd','Agrupación','Descripción de un término.',`<dd>Interfaz de programación</dd>`,`¿Qué es <dd>?`,['La descripción','El término','Una tabla'],0,'Junto a <dt>.');
-    add('figure','Agrupación','Unidad de contenido referenciable.',`<figure><figcaption>Gráfico 1</figcaption></figure>`,`¿Qué agrupa <figure>?`,['Contenido autónomo con título','Solo listas','Scripts'],0,'Con <figcaption>.');
-    add('figcaption','Agrupación','Leyenda de una figura.',`<figure><figcaption>Mapa del sitio</figcaption></figure>`,`¿Qué es <figcaption>?`,['Leyenda de figura','Pie de página','Enlace'],0,'Describe la figura.');
+    add('ol','Listas','Lista ordenada numerada.',`<ol><li>Uno</li><li>Dos</li></ol>`,`<ol> crea…`,['Listas numeradas','Citas','Tablas'],0,'Con <li>.');
+    add('ul','Listas','Lista desordenada con viñetas.',`<ul><li>Elemento</li></ul>`,`<ul> crea…`,['Listas con viñetas','Tablas','Encabezados'],0,'Con <li>.');
+    add('li','Listas','Elemento de una lista.',`<ul><li>Ítem</li></ul>`,`¿Dónde va <li>?`,['Dentro de listas','En <head>','En <table>'],0,'Ítem de lista.');
+    add('dl','Listas','Lista de definiciones.',`<dl><dt>Término</dt><dd>Definición</dd></dl>`,`<dl> se usa para…`,['Definiciones','Tablas','Formularios'],0,'Con <dt> y <dd>.');
+    add('dt','Listas','Término en una lista de definiciones.',`<dt>API</dt>`,`¿Qué es <dt>?`,['El término','La descripción','Un enlace'],0,'Va dentro de <dl>.');
+    add('dd','Listas','Descripción de un término.',`<dd>Interfaz de programación</dd>`,`¿Qué es <dd>?`,['La descripción','El término','Una tabla'],0,'Junto a <dt>.');
+    add('hr','Agrupación','Separador temático; línea horizontal.',`<hr>`,`¿Qué hace <hr>?`,['Separa temas','Crea un encabezado','Vincula CSS'],0,'Elemento vacío.',true);
+    add('figure','Agrupación','Unidad de contenido referenciable.',`<figure><img src="https://picsum.photos/200" alt=""><figcaption>Figura</figcaption></figure>`,`¿Qué agrupa <figure>?`,['Contenido autónomo con leyenda','Solo listas','Scripts'],0,'Con <figcaption>.');
+    add('figcaption','Agrupación','Leyenda de una figura.',`<figcaption>Mapa del sitio</figcaption>`,`¿Qué es <figcaption>?`,['Leyenda de figura','Pie de página','Enlace'],0,'Describe la figura.');
     add('div','Agrupación','Contenedor genérico sin semántica.',`<div class="tarjeta">Contenido</div>`,`¿Qué aporta <div>?`,['Contenedor genérico','Título semántico','Cita'],0,'Cuando no haya etiqueta más específica.');
+    add('address','Seccionado','Información de contacto del autor/organización.',`<address>autor@dominio.tld</address>`,`¿Qué describe <address>?`,['Contacto del autor','Cualquier dirección postal','Datos tabulares'],0,'Asociado al autor/propietario.');
 
-    // Texto en línea y semántica
+    // Texto en línea (semántica)
     add('a','Texto en línea','Hipervínculo.',`<a href="#_">Ir</a>`,`¿Qué crea <a>?`,['Un enlace','Un encabezado','Una tabla'],0,'Usa href, target, rel.');
     add('em','Texto en línea','Énfasis semántico.',`<p>Esto es <em>importante</em>.</p>`,`<em> indica…`,['Énfasis semántico','Subrayado','Código'],0,'Lectores de pantalla lo remarcan.');
     add('strong','Texto en línea','Mayor énfasis.',`<strong>¡Atención!</strong>`,`<strong> indica…`,['Énfasis fuerte','Tachado','Cita'],0,'Más importante que <em>.');
@@ -263,10 +297,6 @@
     add('br','Texto en línea','Salto de línea.',`Línea 1<br>Línea 2`,`<br> inserta…`,['Un salto de línea','Un espacio','Una tabla'],0,'Elemento vacío.',true);
     add('wbr','Texto en línea','Sugerencia de corte de palabra.',`anti<wbr>constitucional`,`¿Qué sugiere <wbr>?`,['Posible salto dentro de palabra','Énfasis','Cita'],0,'Mejora maquetación.',true);
 
-    // Ediciones
-    add('ins','Edición','Contenido insertado (añadido).',`<ins>Nuevo párrafo</ins>`,`<ins> indica…`,['Inserción de contenido','Tachado','Código'],0,'Puede llevar cite/datetime.');
-    add('del','Edición','Contenido eliminado (histórico).',`<del>Texto removido</del>`,`<del> indica…`,['Eliminación histórica','Resaltado','Lista'],0,'Diferente a <s>.');
-
     // Tablas
     add('table','Tablas','Tabla de datos.',`<table>
   <tr><th>Nombre</th><th>Puntos</th></tr>
@@ -274,7 +304,6 @@
 </table>`,`<table> crea…`,['Una tabla de datos','Una lista','Un encabezado'],0,'Usa secciones semánticas.');
     add('caption','Tablas','Título/leyenda de tabla.',`<table>
   <caption>Puntuaciones</caption>
-  ...
 </table>`,`¿Qué es <caption>?`,['Título de la tabla','Celda','Lista'],0,'Primer hijo de <table>.');
     add('colgroup','Tablas','Grupo de columnas para estilos.',`<colgroup>
   <col span="2">
@@ -287,7 +316,49 @@
     add('th','Tablas','Celda de encabezado.',`<th scope="col">Nombre</th>`,`<th> es…`,['Celda de encabezado','Cita','Lista'],0,'Usa scope.');
     add('td','Tablas','Celda de datos.',`<td>42</td>`,`<td> es…`,['Celda de datos','Encabezado','Leyenda'],0,'Contenido tabular.');
 
-    // Interactivos / Plantillas
+    // Multimedia y embebidos
+    add('img','Multimedia','Imagen embebida.',`<img src="https://picsum.photos/200" alt="Ejemplo">`,`¿Qué inserta <img>?`,['Una imagen','Un video','Una tabla'],0,'Usa alt.',true);
+    add('picture','Multimedia','Contenedor para imágenes responsivas.',`<picture>
+  <source srcset="foto.avif" type="image/avif">
+  <img src="foto.jpg" alt="Foto">
+</picture>`,`¿Para qué sirve <picture>?`,['Imágenes responsivas','Audio','Tablas'],0,'Con <source> e <img>.');
+    add('source','Multimedia','Fuente para <audio>, <video> o <picture>.',`<source src="video.mp4" type="video/mp4">`,`¿Dónde va <source>?`,['Dentro de audio/video/picture','En <head>','En <table>'],0,'Elemento vacío.',true);
+    add('video','Multimedia','Reproductor de video.',`<video controls width="300">
+  <source src="clip.mp4" type="video/mp4">
+</video>`,`¿Qué crea <video>?`,['Un reproductor de video','Una lista','Un encabezado'],0,'Atributos: controls, loop, muted…');
+    add('audio','Multimedia','Reproductor de audio.',`<audio controls>
+  <source src="audio.ogg" type="audio/ogg">
+</audio>`,`¿Qué crea <audio>?`,['Un reproductor de audio','Una tabla','Una cita'],0,'Atributos: controls, autoplay…');
+    add('track','Multimedia','Pistas de texto (subtítulos) para medios.',`<track kind="captions" src="sub.vtt" srclang="es" label="Español">`,`¿Para qué es <track>?`,['Subtítulos/captions','Imágenes','Listas'],0,'Elemento vacío.',true);
+    add('map','Multimedia','Mapa de imágenes con áreas clicables.',`<map name="mapa"><area shape="rect" coords="10,10,100,80" href="#_" alt="Área"></map>`,`¿Qué define <map>?`,['Regiones clicables','Tabla','Lista'],0,'Usa con <img usemap>.');
+    add('area','Multimedia','Área en un <map>.',`<area shape="circle" coords="50,50,40" href="#_" alt="Zona">`,`¿Qué representa <area>?`,['Zona de un mapa de imagen','Encabezado','Formulario'],0,'Elemento vacío.',true);
+    add('iframe','Embebido','Documento embebido (otra página).',`<iframe src="about:blank" title="Marco"></iframe>`,`¿Qué inserta <iframe>?`,['Un documento embebido','Una imagen','Un audio'],0,'Aisla contexto.');
+    add('embed','Embebido','Contenido externo (por tipo).',`<embed src="demo.svg" type="image/svg+xml">`,`¿Qué hace <embed>?`,['Incrusta contenido externo','Lista','Cita'],0,'Elemento vacío.',true);
+    add('object','Embebido','Contenedor genérico para contenido externo.',`<object data="movie.mp4" type="video/mp4"><param name="autoplay" value="false"></param></object>`,`<object> sirve para…`,['Incrustar contenido','Tablas','Encabezados'],0,'Puede incluir <param>.');
+    add('param','Embebido','Parámetro para <object>.',`<param name="autoplay" value="false">`,`¿Dónde va <param>?`,['Dentro de <object>','En <head>','En <table>'],0,'Elemento vacío.',true);
+    add('canvas','Gráficos','Lienzo para gráficos con JS.',`<canvas width="300" height="150">No soportado</canvas>`,`¿Qué es <canvas>?`,['Lienzo de dibujo','Tabla','Lista'],0,'Se maneja con JS.');
+
+    // Formularios
+    add('form','Formularios','Formulario interactivo.',`<form action="#_" method="post">
+  <label for="n">Nombre</label>
+  <input id="n" name="n">
+  <button>Enviar</button>
+</form>`,`¿Qué crea <form>?`,['Un formulario','Una tabla','Un video'],0,'Atributos: action, method.');
+    add('label','Formularios','Etiqueta asociada a un control.',`<label for="n">Nombre</label>`,`¿Para qué sirve <label>?`,['Asociar texto al control','Insertar imagen','Crear tabla'],0,'Usa for/id.');
+    add('input','Formularios','Control de entrada (varios tipos).',`<input type="email" placeholder="tucorreo@...">`,`¿Qué es <input>?`,['Control de entrada','Contenedor genérico','Leyenda'],0,'Elemento vacío, usa type.',true);
+    add('textarea','Formularios','Área de texto multi-línea.',`<textarea rows="3" cols="30">Texto</textarea>`,`¿Qué es <textarea>?`,['Entrada multi-línea','Imagen','Lista'],0,'Usa rows/cols.');
+    add('button','Formularios','Botón de acción.',`<button type="button">Click</button>`,`¿Qué crea <button>?`,['Un botón','Un enlace','Una tabla'],0,'type=button|submit|reset.');
+    add('select','Formularios','Lista desplegable.',`<select><option>Uno</option></select>`,`¿Qué es <select>?`,['Selector de opciones','Tabla','Texto preformateado'],0,'Con <option>/<optgroup>.');
+    add('datalist','Formularios','Sugerencias para <input list>.',`<datalist id="sug"><option value="A"><option value="B"></datalist>`,`¿Para qué sirve <datalist>?`,['Sugerencias de entrada','Tablas','Imágenes'],0,'Se enlaza con input[list].');
+    add('option','Formularios','Opción dentro de select/datalist.',`<option value="x">X</option>`,`¿Qué representa <option>?`,['Una opción','Una fila','Una celda'],0,'Hija de select/optgroup.');
+    add('optgroup','Formularios','Grupo de opciones.',`<optgroup label="Grupo"><option>A</option></optgroup>`,`¿Qué es <optgroup>?`,['Agrupa opciones','Define estilos','Inserta scripts'],0,'Hija de select.');
+    add('fieldset','Formularios','Agrupa controles relacionados.',`<fieldset><legend>Contacto</legend>...</fieldset>`,`¿Para qué <fieldset>?`,['Agrupar controles','Insertar imagen','Encabezado'],0,'Con <legend>.');
+    add('legend','Formularios','Título de un fieldset.',`<legend>Datos</legend>`,`¿Qué es <legend>?`,['Título de grupo','Celda','Lista'],0,'Primera hija de fieldset.');
+    add('output','Formularios','Resultado calculado.',`<output for="a b">0</output>`,`¿Qué muestra <output>?`,['Resultados','Citas','Imágenes'],0,'Puede asociarse a controles.');
+    add('progress','Formularios','Barra de progreso.',`<progress value="40" max="100">40%</progress>`,`¿Qué muestra <progress>?`,['Progreso','Tabla','Cita'],0,'Valor entre 0 y max.');
+    add('meter','Formularios','Medidor escalar/con rangos.',`<meter min="0" max="100" low="30" high="70" value="65">65</meter>`,`¿Qué muestra <meter>?`,['Medida en un rango','Lista','Imagen'],0,'Buen uso de low/high.');
+
+    // Interactivos / Scripting / Web Components
     add('details','Interactivo','Mostrar/ocultar contenido a demanda.',`<details><summary>Más info</summary><p>Contenido.</p></details>`,`<details> permite…`,['Mostrar/ocultar contenido','Crear formularios','Reproducir video'],0,'Usa <summary>.');
     add('summary','Interactivo','Cabecera visible de <details>.',`<details><summary>Ver detalles</summary>...</details>`,`<summary> es…`,['Encabezado clicable de details','Pie de tabla','Enlace externo'],0,'Primer hijo de <details>.');
     add('dialog','Interactivo','Cuadro de diálogo modal/no modal.',`<dialog open>Hola</dialog>`,`¿Qué crea <dialog>?`,['Cuadros de diálogo','Tablas','Citas'],0,'Controlable con JS.');
@@ -298,9 +369,221 @@
 </template>`,`<template> contiene…`,['Marcado inerte para clonar','CSS global','Datos de tabla'],0,'No se renderiza hasta usar JS.');
     add('slot','Web Components','Punto de inserción de contenido en un componente.',`<slot name="titulo"></slot>`,`¿Qué es <slot>?`,['Ranura de contenido','Lista','Tabla'],0,'Uso en custom elements.');
 
+    /* === FIN DE LA LISTA === */
+
     /* Estado y elementos */
     var index=0, selectedOption=null, xp=0;
-    var els={category:$('#category'), tagname:$('#tagname'), definition:$('#definition'), example:$('#example'), question:$('#question'), options:$('#options'), progress:$('#progress'), xp:$('#xp'), mastered:$('#mastered'), list:$('#tagList'), feedback:$('#feedback'), badges:$('#badges'), builder:$('#builder'), slots:$('#slots'), pieces:$('#pieces'), builderHint:$('#builderHint')};
+    var els={
+        category:$('#category'),
+        tagname:$('#tagname'),
+        definition:$('#definition'),
+        example:$('#example'),
+        question:$('#question'),
+        options:$('#options'),
+        progress:$('#progress'),
+        xp:$('#xp'),
+        mastered:$('#mastered'),
+        list:$('#tagList'),
+        feedback:$('#feedback'),
+        badges:$('#badges'),
+        builder:$('#builder'),
+        builderHint:$('#builderHint'),
+        pageInput:$('#pageInput'),
+        pageFrame:$('#pageFrame'),
+        btnInsert:$('#btnInsert'),
+        btnReset:$('#btnReset')
+    };
+
+    /* Secciones esperadas para cada etiqueta */
+    var HEAD_ONLY = new Set(['base','link','meta','style','title']);
+    function expectedSectionForTag(name){
+        name = (name||'').toLowerCase();
+        if(name==='html'||name==='head'||name==='body') return 'pre'; // ya están en el esqueleto
+        if(HEAD_ONLY.has(name)) return 'head';
+        if(name==='script' || name==='noscript') return 'any';
+        return 'body';
+    }
+
+    function sectionContent(html, section){
+        var re = new RegExp('<'+section+'[^>]*>([\\s\\S]*?)<\\/'+section+'>','i');
+        var m = html.match(re); return m? m[1] : '';
+    }
+    function hasTag(src, tag, isVoid){
+        var t = tag.replace(new RegExp('[.*+?^${}()|[\\]\\\\]','g'),'\\$&');
+        if(isVoid){
+            var re = new RegExp('<\\s*'+t+'(?:\\s+[^>]*)?>','i');
+            return re.test(src);
+        }else{
+            var re2 = new RegExp('<\\s*'+t+'(?:\\s+[^>]*)?>[\\s\\S]*?<\\/\\s*'+t+'\\s*>','i');
+            return re2.test(src);
+        }
+    }
+
+    function sanitizeForPreview(html){
+        // El iframe está sin allow-scripts, así que es suficiente
+        return html;
+    }
+
+    function renderPagePreview(){
+        var html = els.pageInput.value || getInitialPage();
+        els.pageFrame.srcdoc = sanitizeForPreview(html);
+    }
+
+    function insertSnippetFor(tag){
+        var name = tag.name.toLowerCase();
+        var v = tag.void;
+        var tpl = '';
+
+        // HEAD
+        if(name==='link') tpl = '<link rel="stylesheet" href="styles.css">';
+        else if(name==='meta') tpl = '<meta name="description" content="Descripción de la página">';
+        else if(name==='style') tpl = '<style>/* estilos */\nbody{font-family:system-ui;}\n</style>';
+        else if(name==='base') tpl = '<base href="https://ejemplo.com/">';
+
+        // Seccionado y estructura
+        else if(name==='nav') tpl = '<nav><a href="#_">Inicio</a> · <a href="#_">Acerca</a></nav>';
+        else if(name==='header') tpl = '<header><h1>Mi sitio</h1></header>';
+        else if(name==='section') tpl = '<section><h2>Título de sección</h2><p>Contenido…</p></section>';
+        else if(name==='article') tpl = '<article><h2>Título del artículo</h2><p>Texto…</p></article>';
+        else if(name==='aside') tpl = '<aside>Contenido complementario…</aside>';
+        else if(name==='footer') tpl = '<footer>© 2025</footer>';
+        else if(name==='h1') tpl = '<h1>Encabezado principal</h1>';
+        else if(name==='h2' || name==='h3' || name==='h4' || name==='h5' || name==='h6') tpl = '<'+name+'>Título '+name.toUpperCase()+'</'+name+'>';
+
+        // Listas y agrupación
+        else if(name==='ul') tpl = '<ul>\n  <li>Uno</li>\n  <li>Dos</li>\n</ul>';
+        else if(name==='ol') tpl = '<ol>\n  <li>Primero</li>\n  <li>Segundo</li>\n</ol>';
+        else if(name==='li') tpl = '<li>Elemento</li>';
+        else if(name==='dl') tpl = '<dl>\n  <dt>Término</dt>\n  <dd>Definición</dd>\n</dl>';
+        else if(name==='pre') tpl = '<pre>  texto\n  preformateado</pre>';
+        else if(name==='blockquote') tpl = '<blockquote>Una cita larga…</blockquote>';
+        else if(name==='figure') tpl = '<figure>\n  <img src="https://picsum.photos/320/180" alt="Ejemplo">\n  <figcaption>Figura de ejemplo</figcaption>\n</figure>';
+        else if(name==='figcaption') tpl = '<figcaption>Descripción de la figura</figcaption>';
+        else if(name==='address') tpl = '<address>autor@dominio.tld</address>';
+        else if(name==='div') tpl = '<div class="tarjeta">Contenido</div>';
+        else if(name==='hr') tpl = '<hr>';
+
+        // Texto en línea
+        else if(name==='a') tpl = '<a href="#_">Un enlace</a>';
+        else if(name==='em' || name==='i' || name==='b' || name==='u' || name==='strong' || name==='small' || name==='s' || name==='mark' || name==='span' || name==='bdi' || name==='bdo' || name==='q' || name==='cite' || name==='dfn' || name==='abbr' || name==='data' || name==='time' || name==='code' || name==='var' || name==='samp' || name==='kbd' || name==='sub' || name==='sup'){
+            if(name==='abbr') tpl = '<abbr title="Cascading Style Sheets">CSS</abbr>';
+            else if(name==='data') tpl = '<data value="1200">1,2k</data>';
+            else if(name==='time') tpl = '<time datetime="2025-08-27">27 de agosto de 2025</time>';
+            else if(name==='bdo') tpl = '<bdo dir="rtl">texto</bdo>';
+            else if(name==='q') tpl = '<q>Cita breve</q>';
+            else tpl = '<'+name+'>Texto de ejemplo</'+name+'>';
+        }
+        else if(name==='br') tpl = 'Línea 1<br>Línea 2';
+        else if(name==='wbr') tpl = 'anti<wbr>constitucional';
+
+        // Tablas
+        else if(name==='table') tpl = '<table>\n  <caption>Tabla demo</caption>\n  <thead><tr><th>Col</th><th>Col</th></tr></thead>\n  <tbody><tr><td>A</td><td>B</td></tr></tbody>\n  <tfoot><tr><td colspan="2">Total</td></tr></tfoot>\n</table>';
+        else if(name==='caption') tpl = '<caption>Mi tabla</caption>';
+        else if(name==='colgroup') tpl = '<colgroup>\n  <col span="2">\n</colgroup>';
+        else if(name==='col') tpl = '<col span="1">';
+        else if(name==='thead') tpl = '<thead><tr><th>Col</th></tr></thead>';
+        else if(name==='tbody') tpl = '<tbody><tr><td>Dato</td></tr></tbody>';
+        else if(name==='tfoot') tpl = '<tfoot><tr><td>Pie</td></tr></tfoot>';
+        else if(name==='tr') tpl = '<tr><td>A</td><td>B</td></tr>';
+        else if(name==='th') tpl = '<th scope="col">Encabezado</th>';
+        else if(name==='td') tpl = '<td>Dato</td>';
+
+        // Multimedia / Embebidos
+        else if(name==='img') tpl = '<img src="https://picsum.photos/200" alt="Ejemplo">';
+        else if(name==='picture') tpl = '<picture>\n  <source srcset="foto.avif" type="image/avif">\n  <img src="foto.jpg" alt="Foto">\n</picture>';
+        else if(name==='source') tpl = '<source src="media.mp4" type="video/mp4">';
+        else if(name==='video') tpl = '<video controls width="320">\n  <source src="clip.mp4" type="video/mp4">\n  <track kind="captions" src="sub.vtt" srclang="es" label="ES">\n</video>';
+        else if(name==='audio') tpl = '<audio controls>\n  <source src="audio.ogg" type="audio/ogg">\n</audio>';
+        else if(name==='track') tpl = '<track kind="captions" src="sub.vtt" srclang="es" label="Español">';
+        else if(name==='map') tpl = '<map name="map-ej">\n  <area shape="rect" coords="10,10,120,80" href="#_" alt="Área 1">\n</map>';
+        else if(name==='area') tpl = '<area shape="circle" coords="50,50,40" href="#_" alt="Zona">';
+        else if(name==='iframe') tpl = '<iframe src="about:blank" title="Marco"></iframe>';
+        else if(name==='embed') tpl = '<embed src="demo.svg" type="image/svg+xml">';
+        else if(name==='object') tpl = '<object data="movie.mp4" type="video/mp4"><param name="autoplay" value="false"></param></object>';
+        else if(name==='param') tpl = '<param name="autoplay" value="false">';
+        else if(name==='canvas') tpl = '<canvas width="300" height="150">Tu navegador no soporta canvas</canvas>';
+
+        // Formularios
+        else if(name==='form') tpl = '<form action="#_" method="post">\n  <label for="n">Nombre</label>\n  <input id="n" name="n" type="text">\n  <button>Enviar</button>\n</form>';
+        else if(name==='label') tpl = '<label for="n">Nombre</label>';
+        else if(name==='input') tpl = '<input type="text" placeholder="Escribe...">';
+        else if(name==='textarea') tpl = '<textarea rows="3" cols="30">Texto</textarea>';
+        else if(name==='button') tpl = '<button type="button">Click</button>';
+        else if(name==='select') tpl = '<select>\n  <option>Uno</option>\n  <option>Dos</option>\n</select>';
+        else if(name==='datalist') tpl = '<datalist id="sugerencias">\n  <option value="A">\n  <option value="B">\n</datalist>';
+        else if(name==='option') tpl = '<option value="x">X</option>';
+        else if(name==='optgroup') tpl = '<optgroup label="Grupo">\n  <option>Opción</option>\n</optgroup>';
+        else if(name==='fieldset') tpl = '<fieldset>\n  <legend>Contacto</legend>\n  <label>Email <input type="email"></label>\n</fieldset>';
+        else if(name==='legend') tpl = '<legend>Información</legend>';
+        else if(name==='output') tpl = '<output for="a b">0</output>';
+        else if(name==='progress') tpl = '<progress value="40" max="100">40%</progress>';
+        else if(name==='meter') tpl = '<meter min="0" max="100" low="30" high="70" value="65">65</meter>';
+
+        // Interactivos / Scripting
+        else if(name==='details') tpl = '<details><summary>Ver más</summary><p>Contenido oculto…</p></details>';
+        else if(name==='summary') tpl = '<summary>Resumen</summary>';
+        else if(name==='dialog') tpl = '<dialog open>Hola</dialog>';
+        else if(name==='script') tpl = '<script>console.log("hola")<\/script>';
+        else if(name==='noscript') tpl = '<noscript>Activa JavaScript para ver este sitio.</noscript>';
+        else if(name==='template') tpl = '<template id="card"><article class="card">...</article></template>';
+        else if(name==='slot') tpl = '<slot name="titulo"></slot>';
+
+        // Genérico
+        else if(v) tpl = '<'+name+'>';
+        else tpl = '<'+name+'>Contenido de &lt;'+name+'&gt;</'+name+'>';
+
+        return tpl;
+    }
+
+    function insertCurrentTag(){
+        var t = tags[index];
+        var html = els.pageInput.value || '';
+        var section = expectedSectionForTag(t.name);
+        var tpl = insertSnippetFor(t);
+        var already = hasTag(html, t.name, t.void);
+        if(already){ toast('Ya hay un <'+t.name+'> en la página.'); return; }
+        if(!html.trim()) html = getInitialPage();
+
+        if(section==='head'){
+            if(!new RegExp('<head[\\s\\S]*?<\\/head>','i').test(html)) { toast('No se encontró <head>. Se restableció el esqueleto.'); html = getInitialPage(); }
+            html = html.replace(new RegExp('<\\/head>','i'), '  \n  '+tpl+'\n</head>');
+        }else if(section==='body' || section==='any' || section==='pre'){
+            if(new RegExp('<main[^>]*id=[\'"]app[\'"][^>]*>','i').test(html)){
+                html = html.replace(new RegExp('<\\/main>','i'), '  \n  '+tpl+'\n  </main>');
+            }else if(new RegExp('<body[\\s\\S]*?<\\/body>','i').test(html)){
+                html = html.replace(new RegExp('<\\/body>','i'), '  \n  '+tpl+'\n</body>');
+            }else{
+                toast('No se encontró <body>. Se restableció el esqueleto.');
+                html = getInitialPage().replace(new RegExp('<\\/main>','i'), '  \n  '+tpl+'\n  </main>');
+            }
+        }
+        els.pageInput.value = html; savePage(html); renderPagePreview(); toast('Insertado <'+t.name+'>');
+    }
+
+    function isPageCorrectForTag(){
+        var t = tags[index];
+        var html = (els.pageInput.value||'').trim();
+        if(!html){ return {ok:false, hint:'Escribe o inserta el esqueleto de la página.'}; }
+        if(!new RegExp('<!doctype html>','i').test(html) ||
+            !new RegExp('<html[^>]*>','i').test(html) ||
+            !new RegExp('<head[^>]*>','i').test(html) ||
+            !new RegExp('<\\/head>','i').test(html) ||
+            !new RegExp('<body[^>]*>','i').test(html) ||
+            !new RegExp('<\\/body>','i').test(html)){
+            return {ok:false, hint:'La página debe tener <!doctype>, <html>, <head> y <body>.'};
+        }
+        var section = expectedSectionForTag(t.name);
+        if(section==='pre'){ return {ok:true}; }
+        var inHead = hasTag(sectionContent(html,'head'), t.name, t.void);
+        var inBody = hasTag(sectionContent(html,'body'), t.name, t.void);
+        var exists = inHead || inBody;
+        if(!exists){
+            return {ok:false, hint:'Añade <'+t.name+'> a la sección correcta ('+(section==='head'?'head':'body')+').' };
+        }
+        if(section==='head' && !inHead){ return {ok:false, hint:'<'+t.name+'> debe ir en <head>.'}; }
+        if(section==='body' && !inBody){ return {ok:false, hint:'<'+t.name+'> debe ir en <body> (mejor en <main id="app">).'}; }
+        return {ok:true};
+    }
 
     function renderTag(i){
         var t=tags[i]; index=i; selectedOption=null; els.feedback.textContent='';
@@ -323,68 +606,12 @@
         });
     }
 
+    /* Configuración del builder de página */
     function setupBuilder(t){
-        els.slots.innerHTML=''; els.pieces.innerHTML='';
-        if(t.void){
-            els.builderHint.textContent='Arrastra la pieza correcta para una etiqueta vacía.';
-            var slot=document.createElement('div'); slot.className='dropzone'; slot.dataset.accept='single'; els.slots.appendChild(slot);
-            var good=piece('<'+t.name+'>','single',t.name);
-            var distract1=piece('<hr>','single','hr');
-            var distract2=piece('<br>','single','br');
-            [good,distract1,distract2].sort(function(){return Math.random()-.5}).forEach(function(p){els.pieces.appendChild(p)});
-        }else{
-            els.builderHint.textContent='Coloca 6 piezas en orden: apertura → texto → <mark> → texto marcado → </mark> → cierre';
-            ['open','text','inlineOpen','inlineText','inlineClose','close'].forEach(function(type){
-                var s=document.createElement('div'); s.className='dropzone'; s.dataset.accept=type; els.slots.appendChild(s);
-            });
-            var goodOpen=piece('<'+t.name+'>','open',t.name);
-            var text1=piece('Texto','text','text');
-            var inlineOpen=piece('<mark>','inlineOpen','mark');
-            var inlineText=piece('clave','inlineText','inlineText');
-            var inlineClose=piece('</mark>','inlineClose','mark');
-            var goodClose=piece('</'+t.name+'>','close',t.name);
-            var d1=piece('<div>','open','div');
-            var d2=piece('<em>','inlineOpen','em');
-            var d3=piece('</em>','inlineClose','em');
-            [goodOpen,text1,inlineOpen,inlineText,inlineClose,goodClose,d1,d2,d3].sort(function(){return Math.random()-.5}).forEach(function(p){els.pieces.appendChild(p)});
-        }
-    }
-
-    function piece(label,type,value){
-        var el=document.createElement('div'); el.className='piece'; el.draggable=true; el.textContent=label; el.dataset.type=type; el.dataset.value=value;
-        el.addEventListener('dragstart',function(e){ e.dataTransfer.setData('text/plain', JSON.stringify({type:type,value:value,label:label})); });
-        return el;
-    }
-
-    els.slots.addEventListener('dragover',function(e){ e.preventDefault(); });
-    els.slots.addEventListener('drop',function(e){
-        e.preventDefault();
-        var data=JSON.parse(e.dataTransfer.getData('text/plain')||'{}');
-        var target=e.target.closest('.dropzone'); if(!target) return;
-        var accept=target.dataset.accept; var t=tags[index]; var ok=false;
-        if(t.void && accept==='single'){
-            ok=(data.type==='single' && data.value===t.name);
-        }else{
-            if(accept==='open') ok=(data.type==='open' && data.value===t.name);
-            if(accept==='text') ok=(data.type==='text');
-            if(accept==='inlineOpen') ok=(data.type==='inlineOpen' && data.value==='mark');
-            if(accept==='inlineText') ok=(data.type==='inlineText');
-            if(accept==='inlineClose') ok=(data.type==='inlineClose' && data.value==='mark');
-            if(accept==='close') ok=(data.type==='close' && data.value===t.name);
-        }
-        if(ok){ target.textContent=data.label; target.classList.add('filled'); toast('Pieza colocada ✅'); }
-        else{ toast('Esa pieza no va aquí'); }
-    });
-
-    function isBuilderCorrect(){
-        var t=tags[index]; var zones=$$('.dropzone');
-        if(t.void){
-            return zones.length===1 && zones[0].classList.contains('filled') && zones[0].textContent.trim()==='<'+t.name+'>';
-        }else{
-            if(zones.length!==6) return false;
-            var labels=zones.map(function(z){return z.textContent.trim()});
-            return labels[0]==='<'+t.name+'>' && labels[1]==='Texto' && labels[2]==='<mark>' && labels[3]==='clave' && labels[4]==='</mark>' && labels[5]==='</'+t.name+'>';
-        }
+        els.builderHint.textContent = 'Problema simple: añade <'+t.name+'> en la sección correcta y mantén tu documento válido. Usa “Insertar etiqueta actual” para empezar más rápido.';
+        if(!els.pageInput.value){ els.pageInput.value = loadPage(); }
+        els.pageInput.oninput = function(){ savePage(els.pageInput.value); renderPagePreview(); };
+        renderPagePreview();
     }
 
     function updateProgress(){
@@ -420,13 +647,16 @@
         if(selectedOption===null){ toast('Elige una opción en el Reto 1'); return; }
         var t=tags[index];
         var ok1=(selectedOption===t.question.correctIndex);
-        var ok2=isBuilderCorrect();
+        var res2 = isPageCorrectForTag();
+        var ok2 = res2.ok;
         if(ok1 && ok2){
             if(!t.mastered){ t.mastered=true; xp+=20; updateProgress(); }
-            els.feedback.textContent='✅ ¡Perfecto! '+t.question.explanation+' y el constructor es correcto.';
+            els.feedback.textContent='✅ ¡Perfecto! '+t.question.explanation+' y la etiqueta está correctamente integrada en tu página.';
             confettiBurst();
         }else{
-            var msg='❌ '; if(!ok1) msg+='Revisa la opción del Reto 1. '; if(!ok2) msg+='Completa el constructor.';
+            var msg='❌ ';
+            if(!ok1) msg+='Revisa la opción del Reto 1. ';
+            if(!ok2) msg+=(res2.hint||'Completa el problema del Reto 2.');
             els.feedback.textContent=msg; xp=Math.max(0,xp-2); updateProgress();
         }
     }
@@ -434,9 +664,11 @@
     $('#btnCheck').addEventListener('click',function(e){e.preventDefault(); check();});
     $('#btnNext').addEventListener('click',function(e){e.preventDefault(); renderTag((index+1)%tags.length);});
     $('#btnRandom').addEventListener('click',function(e){e.preventDefault(); renderTag(Math.floor(Math.random()*tags.length));});
+    els.btnInsert.addEventListener('click', function(e){ e.preventDefault(); insertCurrentTag(); });
+    els.btnReset.addEventListener('click', function(e){ e.preventDefault(); if(confirm('¿Restablecer la página a un esqueleto básico?')){ var html=getInitialPage(); els.pageInput.value=html; savePage(html); renderPagePreview(); toast('Página restablecida'); }});
 
     /* Init */
-    (function init(){ updateList(); renderTag(0); updateProgress(); })();
+    (function init(){ updateList(); renderTag(0); updateProgress(); if(!localStorage.getItem(PAGE_KEY)){ savePage(getInitialPage()); } })();
 </script>
 </body>
 </html>
